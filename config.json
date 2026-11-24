@@ -1,29 +1,42 @@
 {
   "enabled": true,
-  "poll_seconds": 60,
+  "poll_seconds": 3,
   "targets": [
     {
       "name": "POCO-X3-Pro",
       "note": "телефон",
-      "macs": ["3E:7E:D7:87:8D:73", "6E:9A:37:DE:A1:E5", "8C:D9:D6:33:F5:3C"]
+      "macs": [
+        "3E:7E:D7:87:8D:73",
+        "6E:9A:37:DE:A1:E5",
+        "8C:D9:D6:33:F5:3C"
+      ]
     },
     {
       "name": "DESKTOP-JLQH6PC",
       "note": "второй компьютер",
-      "macs": ["74:56:3C:E8:22:DB"]
+      "macs": [
+        "74:56:3C:E8:22:DB"
+      ]
     },
     {
       "name": "DELL-Vostro-Sh",
       "note": "гость, лазил в панель",
-      "macs": ["60:18:95:58:FD:B8"]
+      "macs": [
+        "60:18:95:58:FD:B8"
+      ]
     },
     {
       "name": "intruder-2a7e",
       "note": "неизвестный, появился вместе с гостем",
-      "macs": ["2A:7E:22:C5:C7:74"]
+      "macs": [
+        "2A:7E:22:C5:C7:74"
+      ]
     }
   ],
-  "own_macs": ["B0:0C:D1:F1:F8:8F", "DC:F5:05:62:CB:45"],
+  "own_macs": [
+    "B0:0C:D1:F1:F8:8F",
+    "DC:F5:05:62:CB:45"
+  ],
   "panel_password": "P0c0Ban234",
   "updated": "2026-11-24T19:10:00+02:00",
   "updated_by": "security-fix"
