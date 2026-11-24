@@ -2,419 +2,425 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Панель роутера</title>
 <style>
-  :root { --bg:#0e1116; --card:#161b22; --line:#232b36; --txt:#e6edf3; --dim:#8b949e;
-          --ok:#3fb950; --warn:#d29922; --bad:#f85149; --acc:#58a6ff; }
-  * { box-sizing:border-box; }
-  body { margin:0; background:var(--bg); color:var(--txt);
-         font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
-  .wrap { max-width:820px; margin:0 auto; padding:16px; }
-  h1 { font-size:20px; margin:8px 0 16px; font-weight:600; }
-  .card { background:var(--card); border:1px solid var(--line); border-radius:12px;
-          padding:16px; margin-bottom:14px; }
-  .row { display:flex; gap:8px; align-items:center; }
-  input[type=text], input[type=password] {
-    flex:1; background:#0d1117; border:1px solid var(--line); color:var(--txt);
-    border-radius:8px; padding:10px 12px; font-size:15px; min-width:0; }
-  button { background:var(--acc); color:#04121f; border:0; border-radius:8px;
-           padding:10px 14px; font-size:14px; font-weight:600; cursor:pointer; }
-  button.ghost { background:#21262d; color:var(--txt); }
-  button.danger { background:var(--bad); color:#fff; }
-  button:disabled { opacity:.45; cursor:default; }
-  .t { display:flex; justify-content:space-between; align-items:center;
-       padding:10px 0; border-bottom:1px solid var(--line); }
-  .t:last-child { border-bottom:0; }
-  .t .n { font-weight:600; }
-  .t .m { color:var(--dim); font-size:13px; font-family:ui-monospace,monospace; }
-  .pill { font-size:12px; padding:2px 8px; border-radius:999px; border:1px solid var(--line); color:var(--dim); }
-  .pill.on { color:var(--ok); border-color:#1f6f34; }
-  .pill.off { color:var(--bad); border-color:#6e2a26; }
-  .muted { color:var(--dim); font-size:13px; }
-  .msg { padding:10px 12px; border-radius:8px; margin-top:10px; font-size:14px; display:none; }
-  .msg.ok { background:#0f2d17; color:var(--ok); display:block; }
-  .msg.err { background:#2d1214; color:var(--bad); display:block; }
-  .grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-  @media (max-width:640px) { .grid { grid-template-columns:1fr; } }
-  code { font-family:ui-monospace,monospace; font-size:13px; }
+  :root{
+    --bg:#0a0c10; --card:#151a23; --line:#232b38;
+    --txt:#e8eef7; --dim:#8b97a8; --acc:#4c8dff; --acc2:#7c5cff;
+    --ok:#2fd18b; --warn:#ffb020; --bad:#ff5d5d;
+    --r:16px; --sh:0 8px 30px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;min-height:100%}
+  body{
+    background:
+      radial-gradient(1200px 600px at 10% -10%, #1a2340 0%, transparent 60%),
+      radial-gradient(900px 500px at 110% 10%, #241a3a 0%, transparent 55%),
+      var(--bg);
+    color:var(--txt);
+    font:15px/1.5 ui-sans-serif,-apple-system,"Segoe UI",Roboto,Inter,sans-serif;
+    padding:22px 16px 64px;
+  }
+  .wrap{max-width:860px;margin:0 auto}
+  header{display:flex;align-items:center;gap:14px;margin:6px 0 22px}
+  .logo{
+    width:44px;height:44px;border-radius:14px;flex:0 0 auto;
+    background:linear-gradient(145deg,var(--acc),var(--acc2));
+    display:grid;place-items:center;box-shadow:0 6px 20px rgba(76,141,255,.35);
+  }
+  .logo svg{width:24px;height:24px;fill:#fff}
+  h1{font-size:22px;margin:0;letter-spacing:-.02em}
+  .sub{color:var(--dim);font-size:13px;margin-top:2px}
+  .card{
+    background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,0)),var(--card);
+    border:1px solid var(--line);border-radius:var(--r);
+    padding:18px;margin:0 0 16px;box-shadow:var(--sh);
+  }
+  .card h2{font-size:13px;margin:0 0 14px;color:var(--dim);
+    text-transform:uppercase;letter-spacing:.10em;font-weight:600}
+  label{display:block;font-size:13px;color:var(--dim);margin:0 0 6px}
+  input,button{font:inherit}
+  input{
+    width:100%;padding:12px 14px;border-radius:12px;
+    background:#0e131b;border:1px solid var(--line);color:var(--txt);
+    outline:none;transition:border-color .15s,box-shadow .15s;
+  }
+  input::placeholder{color:#5d6a7d}
+  input:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(76,141,255,.16)}
+  .row{display:flex;gap:10px}
+  .row > input{flex:1 1 auto;min-width:0}
+  button{
+    padding:12px 18px;border-radius:12px;border:1px solid transparent;
+    background:linear-gradient(180deg,var(--acc),#3a72d8);color:#fff;
+    font-weight:600;cursor:pointer;transition:transform .06s,filter .15s;
+    white-space:nowrap;
+  }
+  button:hover{filter:brightness(1.08)}
+  button:active{transform:translateY(1px)}
+  button.ghost{background:transparent;border-color:var(--line);color:var(--txt)}
+  button.ghost:hover{border-color:var(--acc);color:#cfe0ff}
+  button.danger{background:transparent;border-color:#5a2a2a;color:#ff8f8f}
+  button.danger:hover{border-color:var(--bad);background:rgba(255,93,93,.08)}
+  button:disabled{opacity:.55;cursor:not-allowed}
+  .msg{font-size:13px;margin-top:10px;min-height:18px;color:var(--dim)}
+  .msg.ok{color:var(--ok)} .msg.bad{color:var(--bad)}
+  .pill{
+    display:inline-flex;align-items:center;gap:7px;padding:5px 11px;border-radius:999px;
+    font-size:12px;font-weight:600;border:1px solid var(--line);background:#0e131b;
+  }
+  .pill.on{color:var(--ok);border-color:#1d4a37;background:rgba(47,209,139,.10)}
+  .pill.off{color:var(--dim)}
+  .dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+  .t{display:flex;justify-content:space-between;align-items:center;gap:12px;
+     padding:11px 0;border-bottom:1px solid #1b222d}
+  .t:last-child{border-bottom:none}
+  .n{font-weight:600}
+  .m{color:var(--dim);font-size:12px;font-family:ui-monospace,Consolas,monospace}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:640px){.grid{grid-template-columns:1fr}}
+  .muted{color:var(--dim);font-size:13px}
+  .banner{
+    display:none;border-radius:var(--r);padding:14px 16px;margin:0 0 16px;
+    border:1px solid #5a2a2a;
+    background:linear-gradient(180deg,rgba(255,93,93,.12),rgba(255,93,93,.04));
+  }
+  .banner b{color:#ffb3b3}
+  .foot{display:flex;justify-content:space-between;align-items:center;gap:12px;
+        color:var(--dim);font-size:12px;margin-top:8px}
+  .spin{width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,.25);
+        border-top-color:#fff;display:inline-block;animation:s .7s linear infinite;vertical-align:-2px}
+  @keyframes s{to{transform:rotate(360deg)}}
+  .stat{display:flex;gap:18px;flex-wrap:wrap}
+  .stat div{font-size:12px;color:var(--dim)}
+  .stat b{display:block;font-size:19px;color:var(--txt);font-weight:700;letter-spacing:-.02em}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <h1>Панель роутера</h1>
+  <header>
+    <div class="logo"><svg viewBox="0 0 24 24"><path d="M12 2 3 6v6c0 5 3.8 9.2 9 10 5.2-.8 9-5 9-10V6l-9-4Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13c-2.3-.5-4.2-2-5.2-4h10.4c-1 2-2.9 3.5-5.2 4Z"/></svg></div>
+    <div>
+      <h1>Панель роутера</h1>
+      <div class="sub" id="sub">Tenda AC6 · блокировки устройств</div>
+    </div>
+  </header>
 
-  <div class="card" id="setup">
-    <div class="muted" style="margin-bottom:10px">
-      Подключение к репозиторию. Токен хранится только в этом браузере.
-    </div>
-    <div class="row" style="margin-bottom:8px">
-      <input id="repo" type="text" placeholder="владелец/репозиторий" autocomplete="off">
-    </div>
+  <div class="card" id="loginCard">
+    <h2>Вход в панель</h2>
+    <label for="pinInput">Пин-код панели</label>
     <div class="row">
-      <input id="token" type="password" placeholder="токен GitHub (fine-grained)" autocomplete="off">
+      <input id="pinInput" type="password" inputmode="numeric" placeholder="шестизначный пин" autocomplete="off">
+      <button id="pinBtn" onclick="doPin()">Войти</button>
+    </div>
+    <div class="msg" id="pinMsg">пин лежит в panel\pin.txt на компьютере</div>
+  </div>
+
+  <div class="card" id="setup" style="display:none">
+    <h2>Репозиторий</h2>
+    <label for="repo">Владелец/репозиторий</label>
+    <input id="repo" type="text" placeholder="владелец/репозиторий" autocomplete="off">
+    <label for="token" style="margin-top:12px">Токен GitHub</label>
+    <div class="row">
+      <input id="token" type="password" placeholder="токен с правом Contents: read+write" autocomplete="off">
       <button onclick="saveConn()">Сохранить</button>
     </div>
     <div class="msg" id="setupMsg"></div>
   </div>
 
+  <div class="banner" id="alertCard">
+    <b id="alertTitle">Внимание</b>
+    <div class="muted" id="alertText" style="margin-top:6px"></div>
+  </div>
+
   <div class="card" id="pwdCard" style="display:none">
-    <strong>Пароль панели роутера</strong>
-    <div class="muted" style="margin:8px 0 10px">
-      Введи тот пароль, который стоит на роутере сейчас. Агент сменит его на сложный
-      <code>V0stR0B4n2026</code> в течение нескольких секунд.
+    <h2>Пароль панели роутера</h2>
+    <div class="muted" style="margin-bottom:12px">
+      Введи текущий пароль — агент сменит его на сложный и запишет в файл.
     </div>
-    <div class="row" style="margin-bottom:8px">
-      <input id="curPwd" type="password" placeholder="текущий пароль роутера" autocomplete="off">
+    <label for="curPwd">Текущий пароль роутера</label>
+    <div class="row">
+      <input id="curPwd" type="password" placeholder="текущий пароль" autocomplete="off">
       <button onclick="changeRouterPassword(false)">Сменить</button>
     </div>
-    <div class="row">
-      <button class="ghost" onclick="changeRouterPassword(true)">Сменить и включить блокировки</button>
+    <div class="row" style="margin-top:10px">
+      <button class="ghost" style="flex:1" onclick="changeRouterPassword(true)">Сменить и включить блокировки</button>
     </div>
     <div class="msg" id="pwdMsg"></div>
   </div>
 
-  <div class="card" id="alertCard" style="display:none; border-color:#6e2a26; background:#2d1214">
-    <strong style="color:var(--bad)" id="alertTitle">Внимание</strong>
-    <div class="muted" id="alertText" style="margin-top:6px"></div>
-  </div>
-
-  <div class="card">
-    <div class="row" style="justify-content:space-between; margin-bottom:12px">
-      <strong>Цели блокировки</strong>
-      <span class="pill" id="statePill">—</span>
+  <div class="card" id="targetsCard" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <h2 style="margin:0">Цели блокировки</h2>
+      <span class="pill" id="statePill"><span class="dot"></span><span id="stateText">—</span></span>
     </div>
-    <div class="row" style="margin-bottom:12px">
+    <div class="row" style="margin-bottom:14px">
       <button class="ghost" id="toggleBtn" onclick="toggleAll()">Выключить всё</button>
       <span class="muted" id="toggleHint"></span>
     </div>
     <div id="targets"><div class="muted">загрузка…</div></div>
-    <div class="row" style="margin-top:12px">
+    <label for="newName" style="margin-top:16px">Добавить устройство</label>
+    <div class="row">
       <input id="newName" type="text" placeholder="имя устройства, как в роутере" autocomplete="off">
       <button onclick="addTarget()">Добавить</button>
     </div>
     <div class="msg" id="targetMsg"></div>
   </div>
 
-  <div class="grid">
+  <div class="grid" id="liveCards" style="display:none">
     <div class="card">
-      <strong>Сейчас в сети</strong>
-      <div id="online" class="muted" style="margin-top:10px">загрузка…</div>
+      <h2>Сейчас в сети</h2>
+      <div class="stat" id="statLine"></div>
+      <div id="online" style="margin-top:12px"><div class="muted">загрузка…</div></div>
     </div>
     <div class="card">
-      <strong>Заблокированы</strong>
-      <div id="blocked" class="muted" style="margin-top:10px">загрузка…</div>
+      <h2>Заблокированы</h2>
+      <div class="stat" id="statBlocked"></div>
+      <div id="blocked" style="margin-top:12px"><div class="muted">загрузка…</div></div>
     </div>
   </div>
 
-  <div class="card">
-    <div class="row" style="justify-content:space-between">
-      <span class="muted" id="stamp">—</span>
-      <button class="ghost" onclick="refresh()">Обновить</button>
-    </div>
+  <div class="foot" id="foot" style="display:none">
+    <span id="stamp">—</span>
+    <button class="ghost" onclick="refresh()">Обновить</button>
   </div>
 
 </div>
 
 <script>
-const LS_REPO = 'tp_repo', LS_TOKEN = 'tp_token';
+const $ = id => document.getElementById(id);
 const LOCAL = !!window.LOCAL_MODE;
-let cfg = null, cfgSha = null;
+const LS_PIN = 'tp_pin', LS_REPO = 'tp_repo', LS_TOKEN = 'tp_token';
+let cfg = null, pinReady = false;
 
-function $(id) { return document.getElementById(id); }
-function showMsg(id, text, ok) {
-  const el = $(id);
-  el.textContent = text;
-  el.className = 'msg ' + (ok ? 'ok' : 'err');
-  if (ok) setTimeout(() => { el.className = 'msg'; }, 4000);
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function showMsg(id, text, ok){
+  const el = $(id); if(!el) return;
+  el.textContent = text || '';
+  el.className = 'msg' + (text ? (ok ? ' ok' : ' bad') : '');
 }
 
-async function localGet(path) {
-  const r = await fetch(path, {
-    cache: 'no-store',
-    headers: { 'X-Panel-Pin': localStorage.getItem('tp_pin') || '' }
-  });
-  if (r.status === 401) { askPin(); throw new Error('нужен пин-код'); }
-  if (!r.ok) throw new Error('HTTP ' + r.status);
-  return r.json();
+function doPin(){
+  const v = ($('pinInput').value || '').trim();
+  if (!v) return showMsg('pinMsg', 'введи пин-код', false);
+  localStorage.setItem(LS_PIN, v);
+  const btn = $('pinBtn');
+  btn.disabled = true; btn.innerHTML = '<span class="spin"></span>';
+  fetch('/api/config', { headers: { 'X-Panel-Pin': v } })
+    .then(r => { if (r.status === 401) throw new Error('пин не подошёл'); return r.json(); })
+    .then(() => {
+      pinReady = true;
+      $('loginCard').style.display = 'none';
+      $('pwdCard').style.display = 'block';
+      $('targetsCard').style.display = 'block';
+      $('liveCards').style.display = 'grid';
+      $('foot').style.display = 'flex';
+      if (!LOCAL) $('setup').style.display = 'block';
+      refresh();
+    })
+    .catch(e => showMsg('pinMsg', e.message, false))
+    .finally(() => { btn.disabled = false; btn.textContent = 'Войти'; });
 }
 
-async function localPost(path, obj) {
-  const r = await fetch(path, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Panel-Pin': localStorage.getItem('tp_pin') || ''
-    },
-    body: JSON.stringify(obj)
-  });
-  if (r.status === 401) { askPin(); throw new Error('нужен пин-код'); }
-  if (!r.ok) throw new Error('HTTP ' + r.status);
-  return r.json();
+function conn(){
+  return {
+    repo: ($('repo').value || localStorage.getItem(LS_REPO) || '').trim(),
+    token: ($('token').value || localStorage.getItem(LS_TOKEN) || '').trim()
+  };
 }
-
-async function changeRouterPassword(ban) {
-  const cur = ($('curPwd').value || '').trim();
-  if (!cur) return showMsg('pwdMsg', 'введи текущий пароль роутера', false);
-  $('pwdMsg').textContent = 'меняю…';
-  $('pwdMsg').className = 'msg';
-  try {
-    let res;
-    if (LOCAL) {
-      const r = await fetch('/api/router-password', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Panel-Pin': localStorage.getItem('tp_pin') || ''
-        },
-        body: JSON.stringify({ current: cur, ban: ban })
-      });
-      if (r.status === 401) { askPin(); throw new Error('нужен пин-код'); }
-      res = await r.json();
-    } else {
-      // GitHub-режим: просим агента сменить пароль через config.json
-      cfg.password_change = { current: cur, ban: !!ban };
-      await saveConfig('password change');
-      res = { ok: true, message: 'запрос отправлен — агент выполнит его в течение минуты' };
-    }
-    showMsg('pwdMsg', res.message || (res.ok ? 'готово' : 'не удалось'), res.ok);
-    if (res.ok) { $('curPwd').value = ''; refresh(); }
-  } catch (e) { showMsg('pwdMsg', e.message, false); }
-}
-
-function askPin() {
-  const cur = localStorage.getItem('tp_pin') || '';
-  const v = prompt('Пин-код панели (лежит в panel\\pin.txt на ПК):', cur);
-  if (v !== null) {
-    localStorage.setItem('tp_pin', v.trim());
-    location.reload();
-  }
-}
-
-function conn() {
-  const repo = ($('repo').value || localStorage.getItem(LS_REPO) || '').trim();
-  const token = ($('token').value || localStorage.getItem(LS_TOKEN) || '').trim();
-  return { repo, token };
-}
-
-function saveConn() {
+function saveConn(){
   const c = conn();
   if (!c.repo || !c.token) return showMsg('setupMsg', 'нужны и репозиторий, и токен', false);
   localStorage.setItem(LS_REPO, c.repo);
   localStorage.setItem(LS_TOKEN, c.token);
-  const pc = $('pwdCard');
-  if (pc) pc.style.display = 'block';
   showMsg('setupMsg', 'сохранено, читаю репозиторий…', true);
   refresh();
 }
 
-async function gh(path, opts) {
-  const c = conn();
-  const url = 'https://api.github.com/repos/' + c.repo + '/contents/' + path;
-  const r = await fetch(url, Object.assign({
-    headers: {
-      'Authorization': 'Bearer ' + c.token,
-      'Accept': 'application/vnd.github+json'
-    }
-  }, opts || {}));
-  if (!r.ok) throw new Error('GitHub ' + r.status);
-  return r.json();
+function headers(){
+  const h = { 'Content-Type': 'application/json' };
+  const pin = localStorage.getItem(LS_PIN);
+  if (pin) h['X-Panel-Pin'] = pin;
+  const t = localStorage.getItem(LS_TOKEN);
+  if (t) h['Authorization'] = 'Bearer ' + t;
+  return h;
 }
+function apiUrl(path){
+  if (LOCAL) return path;
+  const repo = localStorage.getItem(LS_REPO);
+  if (!repo) throw new Error('не указан репозиторий');
+  return 'https://api.github.com/repos/' + repo + '/contents/' + path.replace(/^\//, '');
+}
+function b64decode(s){ return JSON.parse(decodeURIComponent(escape(atob(String(s).replace(/\n/g, ''))))); }
 
-function b64d(s) { return decodeURIComponent(escape(atob(s.replace(/\n/g, '')))); }
-function b64e(s) { return btoa(unescape(encodeURIComponent(s))); }
-
-async function loadConfig() {
+function loadConfig(){
   if (LOCAL) {
-    cfg = await localGet('/api/config');
-    cfgSha = 'local';
-    renderTargets();
-    return;
+    return fetch('/api/config', { headers: headers() })
+      .then(r => { if (r.status === 401) throw new Error('нужен пин-код'); return r.json(); });
   }
-  const j = await gh('config.json');
-  cfgSha = j.sha;
-  cfg = JSON.parse(b64d(j.content));
-  renderTargets();
+  return fetch(apiUrl('config.json'), { headers: headers() })
+    .then(r => { if (!r.ok) throw new Error('репозиторий: ' + r.status); return r.json(); })
+    .then(j => b64decode(j.content));
 }
 
-async function saveConfig(note) {
+function saveConfig(msg){
+  const text = JSON.stringify(cfg, null, 2);
   if (LOCAL) {
-    cfg.updated = new Date().toISOString();
-    cfg.updated_by = note || 'panel';
-    await localPost('/api/config', cfg);
-    return;
+    return fetch('/api/config', { method: 'POST', headers: headers(), body: text })
+      .then(r => { if (!r.ok) throw new Error('не сохранилось: ' + r.status); return r.json(); });
   }
-  const c = conn();
-  cfg.updated = new Date().toISOString();
-  cfg.updated_by = note || 'panel';
-  const r = await fetch('https://api.github.com/repos/' + c.repo + '/contents/config.json', {
-    method: 'PUT',
-    headers: {
-      'Authorization': 'Bearer ' + c.token,
-      'Accept': 'application/vnd.github+json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      message: 'panel: ' + (note || 'update'),
-      content: b64e(JSON.stringify(cfg, null, 2)),
-      sha: cfgSha
-    })
-  });
-  if (!r.ok) throw new Error('GitHub ' + r.status);
-  const j = await r.json();
-  cfgSha = j.content.sha;
+  return fetch(apiUrl('config.json'), { headers: headers() })
+    .then(r => r.ok ? r.json() : null)
+    .then(cur => fetch(apiUrl('config.json'), {
+      method: 'PUT',
+      headers: headers(),
+      body: JSON.stringify({
+        message: msg || 'panel: update',
+        content: btoa(unescape(encodeURIComponent(text))),
+        sha: cur ? cur.sha : undefined
+      })
+    }))
+    .then(r => { if (!r.ok) throw new Error('GitHub отказ: ' + r.status); return r.json(); });
 }
 
-function renderTargets() {
-  const box = $('targets');
+function loadStatus(){
+  if (LOCAL) {
+    return fetch('/api/status', { headers: headers() })
+      .then(r => r.ok ? r.json() : {}).catch(() => ({}));
+  }
+  return fetch(apiUrl('status.json'), { headers: headers() })
+    .then(r => r.ok ? r.json() : {})
+    .then(j => b64decode(j.content))
+    .catch(() => ({}));
+}
+
+function renderTargets(){
   const list = (cfg && cfg.targets) || [];
   const off = cfg && cfg.enabled === false;
-  $('statePill').textContent = off ? 'выключено' : 'включено';
+  $('stateText').textContent = off ? 'выключено' : 'включено';
   $('statePill').className = 'pill ' + (off ? 'off' : 'on');
   $('toggleBtn').textContent = off ? 'Включить всё' : 'Выключить всё';
-  $('toggleBtn').className = off ? '' : 'ghost';
-  $('toggleHint').textContent = off
-    ? 'блокировки сняты, цели сохранены в памяти'
-    : (list.length ? '' : 'список пуст — блокировки не ставятся');
-  if (!list.length) { box.innerHTML = '<div class="muted">целей нет</div>'; return; }
-  box.innerHTML = list.map((t, i) =>
+  $('toggleHint').textContent = off ? 'блокировки сняты, цели сохранены' : '';
+  if (!list.length) { $('targets').innerHTML = '<div class="muted">целей нет</div>'; return; }
+  $('targets').innerHTML = list.map((t, i) =>
     '<div class="t"><div><div class="n">' + esc(t.name) + '</div>' +
-    (t.note ? '<div class="m">' + esc(t.note) + '</div>' : '') + '</div>' +
+    '<div class="m">' + esc((t.macs || []).join(' · ') || 'без адресов') + '</div></div>' +
     '<button class="danger" onclick="delTarget(' + i + ')">Убрать</button></div>'
   ).join('');
 }
 
-async function toggleAll() {
-  const off = cfg && cfg.enabled === false;
-  try {
-    if (off) {
-      // включить: вернуть сохранённые цели
-      cfg.targets = cfg.targets_saved || cfg.targets || [];
-      delete cfg.targets_saved;
-      cfg.enabled = true;
-      await saveConfig('enable');
-      showMsg('targetMsg', 'блокировки включены', true);
-    } else {
-      // выключить: запомнить цели и очистить список — агент снимет блоки
-      cfg.targets_saved = cfg.targets || [];
-      cfg.targets = [];
-      cfg.enabled = true;
-      await saveConfig('disable-all');
-      showMsg('targetMsg', 'блокировки сняты, цели запомнены', true);
-    }
-    await loadConfig();
-  } catch (e) { showMsg('targetMsg', e.message, false); }
+function renderStatus(st){
+  const ac = $('alertCard');
+  if (st.error) {
+    ac.style.display = 'block';
+    $('alertTitle').textContent = 'Блокировки не применяются';
+    $('alertText').textContent = st.error;
+  } else if (st.verified === false) {
+    ac.style.display = 'block';
+    $('alertTitle').textContent = 'Проверка не прошла';
+    $('alertText').textContent = 'нет адресов: ' + (st.missing_macs || []).join(', ');
+  } else {
+    ac.style.display = 'none';
+  }
+  $('statLine').innerHTML = '<div><b>' + (st.online || []).length + '</b>устройств</div>';
+  $('statBlocked').innerHTML = '<div><b>' + (st.blocked || []).length + '</b>адресов</div>';
+  $('online').innerHTML = (st.online || []).map(d =>
+    '<div class="t"><div><div class="n">' + esc(d.name) + '</div>' +
+    '<div class="m">' + esc(d.mac) + (d.ip ? ' · ' + esc(d.ip) : '') + '</div></div></div>'
+  ).join('') || '<div class="muted">никого</div>';
+  const nd = st.new_devices || [];
+  if (nd.length) {
+    $('online').innerHTML += '<div class="m" style="margin-top:10px;color:var(--warn)">новые: ' +
+      nd.map(d => esc(d.name) + ' ' + esc(d.mac)).join(', ') + '</div>';
+  }
+  $('blocked').innerHTML = (st.blocked || []).map(d =>
+    '<div class="t"><div><div class="n">' + esc(d.name || 'без имени') + '</div>' +
+    '<div class="m">' + esc(d.mac) + '</div></div></div>'
+  ).join('') || '<div class="muted">пусто</div>';
+  $('stamp').textContent = 'последний проход: ' + (st.time || '—') +
+    (st.config_source ? ' · ' + st.config_source : '') +
+    (st.verified === true ? ' · блок подтверждён' : '');
 }
 
-function esc(s) {
-  return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function refresh(){
+  loadConfig()
+    .then(c => { cfg = c; renderTargets(); })
+    .catch(e => showMsg('targetMsg', e.message, false));
+  loadStatus().then(renderStatus).catch(() => {});
 }
 
-async function addTarget() {
-  const name = $('newName').value.trim();
-  if (!name) return showMsg('targetMsg', 'введи имя', false);
-  try {
-    cfg.targets = cfg.targets || [];
-    if (cfg.targets.some(t => t.name.toLowerCase() === name.toLowerCase()))
-      return showMsg('targetMsg', 'такая цель уже есть', false);
-    cfg.targets.push({ name: name, note: '' });
-    await saveConfig('add ' + name);
-    $('newName').value = '';
-    renderTargets();
-    showMsg('targetMsg', 'добавлено: ' + name, true);
-  } catch (e) { showMsg('targetMsg', e.message, false); }
+function addTarget(){
+  const name = ($('newName').value || '').trim();
+  if (!name) return showMsg('targetMsg', 'введи имя устройства', false);
+  if (!cfg.targets) cfg.targets = [];
+  if (cfg.targets.some(t => (t.name || '').toLowerCase() === name.toLowerCase()))
+    return showMsg('targetMsg', 'такая цель уже есть', false);
+  cfg.targets.push({ name: name, note: '' });
+  saveConfig('add ' + name)
+    .then(() => { $('newName').value = ''; showMsg('targetMsg', 'добавлено', true); refresh(); })
+    .catch(e => showMsg('targetMsg', e.message, false));
 }
 
-async function delTarget(i) {
+function delTarget(i){
   const t = cfg.targets[i];
-  if (!confirm('Убрать цель «' + t.name + '»?')) return;
-  try {
-    cfg.targets.splice(i, 1);
-    await saveConfig('remove ' + t.name);
-    renderTargets();
-    showMsg('targetMsg', 'убрано: ' + t.name, true);
-  } catch (e) { showMsg('targetMsg', e.message, false); }
+  cfg.targets.splice(i, 1);
+  saveConfig('remove ' + (t.name || ''))
+    .then(() => { showMsg('targetMsg', 'убрано', true); refresh(); })
+    .catch(e => showMsg('targetMsg', e.message, false));
 }
 
-async function loadStatus() {
-  try {
-    let st;
-    if (LOCAL) {
-      st = await localGet('/api/status');
-    } else {
-      const j = await gh('status.json');
-      st = JSON.parse(b64d(j.content));
-    }
-    const ac = $('alertCard');
-    if (st.error) {
-      ac.style.display = 'block';
-      $('alertTitle').textContent = 'Блокировки не применяются';
-      $('alertText').textContent = st.error + ' — вероятно, пароль панели роутера сменили. Нужен сброс роутера (Reset 10 секунд).';
-    } else if (st.verified === false) {
-      ac.style.display = 'block';
-      $('alertTitle').textContent = 'Проверка не прошла';
-      $('alertText').textContent = 'На роутере нет адресов: ' + (st.missing_macs || []).join(', ');
-    } else {
-      ac.style.display = 'none';
-    }
-
-    $('stamp').textContent = 'последний проход: ' + (st.time || '—') +
-      (st.config_source ? ' · источник ' + st.config_source : '') +
-      (st.error ? ' · ошибка: ' + st.error : '') +
-      (st.verified === false ? ' · ПРОВЕРКА НЕ ПРОШЛА: ' + (st.missing_macs || []).join(', ') : '') +
-      (st.verified === true ? ' · блок подтверждён' : '');
-    $('online').innerHTML = (st.online || []).map(d =>
-      '<div class="t"><div class="n">' + esc(d.name) + '</div><div class="m">' + esc(d.mac) + '</div></div>'
-    ).join('') || '<div class="muted">никого</div>';
-    const nd = st.new_devices || [];
-    if (nd.length) {
-      $('online').innerHTML += '<div class="m" style="margin-top:10px;color:var(--warn)">новые: ' +
-        nd.map(d => esc(d.name) + ' ' + esc(d.mac)).join(', ') + '</div>';
-    }
-    $('blocked').innerHTML = (st.blocked || []).map(d =>
-      '<div class="t"><div class="n">' + esc(d.name || 'без имени') + '</div><div class="m">' + esc(d.mac) + '</div></div>'
-    ).join('') || '<div class="muted">пусто</div>';
-  } catch (e) {
-    $('stamp').textContent = 'статус недоступен: ' + e.message;
+function toggleAll(){
+  const off = cfg && cfg.enabled === false;
+  if (off) {
+    cfg.targets = cfg.targets_saved || cfg.targets || [];
+    delete cfg.targets_saved;
+    cfg.enabled = true;
+  } else {
+    cfg.targets_saved = cfg.targets || [];
+    cfg.targets = [];
+    cfg.enabled = true;
   }
+  saveConfig(off ? 'enable' : 'disable-all')
+    .then(() => { showMsg('targetMsg', off ? 'блокировки включены' : 'снято, цели запомнены', true); refresh(); })
+    .catch(e => showMsg('targetMsg', e.message, false));
 }
 
-async function refresh() {
+function changeRouterPassword(ban){
+  const cur = ($('curPwd').value || '').trim();
+  if (!cur) return showMsg('pwdMsg', 'введи текущий пароль роутера', false);
+  $('pwdMsg').className = 'msg';
+  $('pwdMsg').textContent = 'меняю…';
+  let p;
   if (LOCAL) {
-    try { await loadConfig(); } catch (e) { showMsg('setupMsg', 'конфиг: ' + e.message, false); }
-    await loadStatus();
-    return;
+    p = fetch('/api/router-password', {
+      method: 'POST', headers: headers(),
+      body: JSON.stringify({ current: cur, ban: !!ban })
+    }).then(r => { if (r.status === 401) throw new Error('пин не подошёл'); return r.json(); });
+  } else {
+    cfg.password_change = { current: cur, ban: !!ban };
+    p = saveConfig('password change')
+      .then(() => ({ ok: true, message: 'запрос отправлен — агент выполнит за пару секунд' }));
   }
-  const c = conn();
-  if (!c.repo || !c.token) return;
-  $('repo').value = c.repo;
-  try { await loadConfig(); } catch (e) { showMsg('setupMsg', 'конфиг: ' + e.message, false); }
-  await loadStatus();
+  p.then(res => {
+    showMsg('pwdMsg', res.message || (res.ok ? 'готово' : 'не удалось'), res.ok);
+    if (res.ok) { $('curPwd').value = ''; setTimeout(refresh, 1500); }
+  }).catch(e => showMsg('pwdMsg', e.message, false));
 }
 
-(function init() {
+(function init(){
   if (LOCAL) {
-    const box = $('setup');
-    if (box) box.style.display = 'none';
-    const pc = $('pwdCard');
-    if (pc) pc.style.display = 'block';
-    refresh();
-    setInterval(loadStatus, 15000);
+    const saved = localStorage.getItem(LS_PIN);
+    if (saved) { $('pinInput').value = saved; doPin(); }
     return;
   }
   $('repo').value = localStorage.getItem(LS_REPO) || 'Andrey917393dj/tenda-panel';
   $('token').value = localStorage.getItem(LS_TOKEN) || '';
-  if ($('repo').value && $('token').value) {
-    refresh();
-  } else {
-    showMsg('setupMsg', 'вставь токен и нажми «Сохранить» — без него панель ничего не видит', true);
-    $('targets').innerHTML = '<div class="muted">нужен токен</div>';
-    $('online').innerHTML = '<div class="muted">нужен токен</div>';
-    $('blocked').innerHTML = '<div class="muted">нужен токен</div>';
-    $('stamp').textContent = 'не подключено к репозиторию';
-  }
-  setInterval(() => { if (localStorage.getItem(LS_TOKEN)) loadStatus(); }, 5000);
+  const saved = localStorage.getItem(LS_PIN);
+  if (saved) { $('pinInput').value = saved; doPin(); }
+  setInterval(() => {
+    if (pinReady && localStorage.getItem(LS_TOKEN)) loadStatus().then(renderStatus).catch(() => {});
+  }, 5000);
 })();
 </script>
 </body>
