@@ -103,16 +103,21 @@
 
   <div class="card" id="loginCard">
     <h2>Подключение</h2>
-    <label for="pinInput">Пин-код (для локальной панели)</label>
-    <div class="row" style="margin-bottom:12px">
-      <input id="pinInput" type="password" inputmode="numeric" placeholder="пин" autocomplete="off">
-      <button id="pinBtn" onclick="connect()">Подключиться</button>
+    <div id="pinBox">
+      <label for="pinInput">Пин-код панели</label>
+      <div class="row" style="margin-bottom:12px">
+        <input id="pinInput" type="password" inputmode="numeric" placeholder="пин" autocomplete="off">
+        <button id="pinBtn" onclick="connect()">Подключиться</button>
+      </div>
     </div>
     <div id="ghBox">
       <label for="repo">Репозиторий</label>
       <input id="repo" type="text" placeholder="владелец/репозиторий" autocomplete="off" style="margin-bottom:10px">
-      <label for="token">Токен GitHub</label>
-      <input id="token" type="password" placeholder="токен с правом Contents: read+write" autocomplete="off">
+      <label for="token">Токен GitHub — только для записи, читать можно без него</label>
+      <div class="row">
+        <input id="token" type="password" placeholder="можно оставить пустым" autocomplete="off">
+        <button id="ghBtn" onclick="connect()">Открыть</button>
+      </div>
     </div>
     <div class="msg" id="pinMsg"></div>
   </div>
@@ -262,16 +267,16 @@ async function writeConfig(note){
 
 /* ---------- подключение ---------- */
 async function connect(){
-  const btn = $('pinBtn');
-  btn.disabled = true; btn.innerHTML = '<span class="spin"></span>';
+  const btn = LOCAL ? $('pinBtn') : $('ghBtn');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spin"></span>'; }
   try {
     localStorage.setItem(LS.pin, pinVal());
     if (!LOCAL) {
       const repo = repoName();
-      const tok = tokenVal();
-      if (!repo || !tok) throw new Error('нужны репозиторий и токен');
+      if (!repo) throw new Error('нужен репозиторий');
       localStorage.setItem(LS.repo, repo);
-      localStorage.setItem(LS.token, tok);
+      // токен не обязателен: чтение идёт из raw, он нужен только для записи
+      if (tokenVal()) localStorage.setItem(LS.token, tokenVal());
     }
     cfg = await readConfig();
     ready = true;
@@ -284,8 +289,19 @@ async function connect(){
   } catch (e) {
     msg('pinMsg', e.message, false);
   } finally {
-    btn.disabled = false; btn.textContent = 'Подключиться';
+    if (btn) { btn.disabled = false; btn.textContent = LOCAL ? 'Подключиться' : 'Открыть'; }
   }
+}
+
+/* токен спрашиваем только когда что-то меняем */
+function ensureToken(){
+  if (LOCAL) return true;
+  if (tokenVal()) return true;
+  const t = prompt('Для записи нужен токен GitHub (Contents: read+write).\nОн сохранится в этом браузере.');
+  if (!t) return false;
+  localStorage.setItem(LS.token, t.trim());
+  if ($('token')) $('token').value = t.trim();
+  return true;
 }
 
 /* ---------- отрисовка ---------- */
@@ -360,6 +376,7 @@ function findTargetByMac(mac){
     (t.macs || []).some(m => String(m).toUpperCase() === mac.toUpperCase()));
 }
 async function block(mac, name){
+  if (!ensureToken()) return;
   msg('targetMsg', 'блокирую…', true);
   try {
     let i = findTargetByMac(mac);
@@ -377,6 +394,7 @@ async function block(mac, name){
   } catch (e) { msg('targetMsg', e.message, false); }
 }
 async function unblock(mac){
+  if (!ensureToken()) return;
   msg('targetMsg', 'разблокирую…', true);
   try {
     const i = findTargetByMac(mac);
@@ -391,12 +409,14 @@ async function unblock(mac){
   } catch (e) { msg('targetMsg', e.message, false); }
 }
 async function delTarget(i){
+  if (!ensureToken()) return;
   const t = cfg.targets[i];
   cfg.targets.splice(i, 1);
   try { await writeConfig('remove ' + (t.name || '')); await refresh(); pollStatus(); }
   catch (e) { msg('targetMsg', e.message, false); }
 }
 async function addTarget(){
+  if (!ensureToken()) return;
   const name = ($('newName').value || '').trim();
   if (!name) return msg('targetMsg', 'введи имя устройства', false);
   cfg.targets = cfg.targets || [];
@@ -411,6 +431,7 @@ async function addTarget(){
   } catch (e) { msg('targetMsg', e.message, false); }
 }
 async function toggleAll(){
+  if (!ensureToken()) return;
   const off = cfg.enabled === false;
   if (off) { cfg.targets = cfg.targets_saved || cfg.targets || []; delete cfg.targets_saved; cfg.enabled = true; }
   else { cfg.targets_saved = cfg.targets || []; cfg.targets = []; cfg.enabled = true; }
