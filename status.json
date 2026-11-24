@@ -1,5 +1,5 @@
 {
- "time": "2026-11-24T22:27:32",
+ "time": "2026-11-24T22:28:06",
  "online": [
   {
    "name": "A12-koristuvaca-Igroman",
@@ -10,15 +10,40 @@
    "name": "DESKTOP-EB4A5NI",
    "mac": "b0:0c:d1:f1:f8:8f",
    "ip": "192.168.0.200"
-  },
-  {
-   "name": "DESKTOP-JLQH6PC",
-   "mac": "74:56:3c:e8:22:db",
-   "ip": "192.168.0.197"
   }
  ],
- "blocked": [],
- "targets": [],
+ "blocked": [
+  {
+   "name": "DESKTOP-JLQH6PC",
+   "mac": "74:56:3c:e8:22:db"
+  },
+  {
+   "name": "Unknown",
+   "mac": "2a:7e:22:c5:c7:74"
+  },
+  {
+   "name": "Unknown",
+   "mac": "3e:7e:d7:87:8d:73"
+  },
+  {
+   "name": "Unknown",
+   "mac": "60:18:95:58:fd:b8"
+  },
+  {
+   "name": "Unknown",
+   "mac": "6e:9a:37:de:a1:e5"
+  },
+  {
+   "name": "Unknown",
+   "mac": "8c:d9:d6:33:f5:3c"
+  }
+ ],
+ "targets": [
+  "POCO-X3-Pro",
+  "DESKTOP-JLQH6PC",
+  "DELL-Vostro-Sh",
+  "intruder-2a7e"
+ ],
  "known_macs": [
   "2A:7E:22:C5:C7:74",
   "3E:7E:D7:87:8D:73",
@@ -29,25 +54,12 @@
  ],
  "blocked_online_now": 0,
  "parental_entries": 0,
- "verified": false,
- "missing_macs": [
-  "2A:7E:22:C5:C7:74",
-  "3E:7E:D7:87:8D:73",
-  "60:18:95:58:FD:B8",
-  "6E:9A:37:DE:A1:E5",
-  "74:56:3C:E8:22:DB",
-  "8C:D9:D6:33:F5:3C"
- ],
- "new_devices": [
-  {
-   "name": "DESKTOP-JLQH6PC",
-   "mac": "74:56:3c:e8:22:db",
-   "ip": "192.168.0.197"
-  }
- ],
+ "verified": true,
+ "missing_macs": [],
+ "new_devices": [],
  "ip_targets": [],
- "pause_left": 695,
+ "pause_left": 0,
  "schedule": {},
  "auto_block_new": false,
- "config_source": "local"
+ "config_source": "github"
 }
