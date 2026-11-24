@@ -159,11 +159,18 @@
       <div class="chip" onclick="runProbe()">Проверить, режет ли блок</div>
       <div class="chip" onclick="loadHistory()">История</div>
       <div class="chip" onclick="loadHealth()">Здоровье</div>
+      <div class="chip" onclick="loadWizard()">Мастер</div>
+      <div class="chip" onclick="loadSuccess()">Успешность</div>
+      <div class="chip" onclick="loadSnapshots()">Снимки</div>
+      <div class="chip" onclick="doRollback()">Откатить блок-лист</div>
+      <div class="chip" onclick="loadSecurity()">Безопасность</div>
+      <div class="chip" onclick="loadNetmap()">Карта сети</div>
       <div class="chip" onclick="refresh()">Обновить</div>
     </div>
     <div class="msg" id="toolsMsg"></div>
     <div id="history" style="margin-top:10px"></div>
     <pre id="healthBox" class="muted hidden" style="white-space:pre-wrap;margin-top:10px"></pre>
+    <div id="extraBox" style="margin-top:10px"></div>
   </div>
 
   <div class="foot hidden" id="foot"><span id="stamp">—</span><span id="mode">—</span></div>
@@ -456,6 +463,120 @@ async function loadHealth(){
     const res = await r.json();
     $('healthBox').classList.remove('hidden');
     $('healthBox').textContent = res.text || res.error || '';
+  } catch (e) { msg('toolsMsg', e.message, false); }
+}
+
+function localGet(path){
+  return fetch(path, { headers: { 'X-Panel-Pin': pinVal() } }).then(r => r.json());
+}
+function localPost(path, body){
+  return fetch(path, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-Panel-Pin': pinVal() },
+    body: JSON.stringify(body || {})
+  }).then(r => r.json());
+}
+function rows(list, fmt){
+  return list.length ? list.map(fmt).join('') : '<div class="muted">пусто</div>';
+}
+
+async function loadWizard(){
+  if (!LOCAL) return msg('toolsMsg', 'мастер доступен на локальной панели', false);
+  try {
+    const list = await localGet('/api/wizard');
+    $('extraBox').innerHTML = '<h2 style="font-size:12px;color:var(--dim)">Готовность</h2>' +
+      rows(list, s => '<div class="dev"><div><div class="nm">' +
+        (s.ok ? '✓ ' : '✕ ') + esc(s.step) + '</div>' +
+        '<div class="mc">' + esc(s.detail) + (s.fix ? ' · ' + esc(s.fix) : '') + '</div></div></div>');
+  } catch (e) { msg('toolsMsg', e.message, false); }
+}
+
+async function loadSuccess(){
+  if (!LOCAL) return msg('toolsMsg', 'график доступен на локальной панели', false);
+  try {
+    const d = await localGet('/api/success');
+    const pts = (d.points || []).slice(-60);
+    const bars = pts.map(p => '<span style="display:inline-block;width:5px;height:' +
+      (p.ok ? '18' : '34') + 'px;margin-right:2px;border-radius:2px;background:' +
+      (p.ok ? 'var(--ok)' : 'var(--bad)') + '"></span>').join('');
+    $('extraBox').innerHTML = '<h2 style="font-size:12px;color:var(--dim)">Успешность блокировок</h2>' +
+      '<div class="stat"><div><b>' + d.percent + '%</b>успешных</div>' +
+      '<div><b>' + d.ok + '</b>проходов</div><div><b>' + d.bad + '</b>провалов</div></div>' +
+      '<div style="margin-top:10px">' + bars + '</div>';
+  } catch (e) { msg('toolsMsg', e.message, false); }
+}
+
+async function loadSnapshots(){
+  if (!LOCAL) return msg('toolsMsg', 'снимки доступны на локальной панели', false);
+  try {
+    const d = await localGet('/api/snapshots');
+    const last = d.last;
+    $('extraBox').innerHTML = '<h2 style="font-size:12px;color:var(--dim)">Снимки блок-листа</h2>' +
+      (last ? '<div class="dev"><div><div class="nm">последний: ' + esc(last.time) + '</div>' +
+        '<div class="mc">' + esc(last.reason || '') + ' · адресов ' +
+        ((last.blocked || []).length) + '</div></div></div>' : '<div class="muted">снимков нет</div>') +
+      '<div class="muted" style="margin-top:8px">всего: ' + ((d.list || []).length) + '</div>';
+  } catch (e) { msg('toolsMsg', e.message, false); }
+}
+
+async function doRollback(){
+  if (!LOCAL) return msg('toolsMsg', 'откат доступен на локальной панели', false);
+  if (!confirm('Вернуть блок-лист из последнего снимка?')) return;
+  try {
+    const res = await localPost('/api/rollback', {});
+    msg('toolsMsg', res.message || (res.ok ? 'готово' : 'нет'), res.ok);
+    pollStatus();
+  } catch (e) { msg('toolsMsg', e.message, false); }
+}
+
+async function loadSecurity(){
+  if (!LOCAL) return msg('toolsMsg', 'безопасность доступна на локальной панели', false);
+  try {
+    const s = await localGet('/api/security');
+    $('extraBox').innerHTML = '<h2 style="font-size:12px;color:var(--dim)">Безопасность роутера</h2>' +
+      '<div class="dev"><div><div class="nm">Wi-Fi</div><div class="mc">' +
+        esc(s.ssid || '—') + ' · ' + esc(s.security || '—') + '</div></div></div>' +
+      '<div class="dev"><div><div class="nm">WPS</div><div class="mc">' +
+        esc(String(s.wps)) + '</div></div>' +
+        '<div class="btns"><button class="bad" onclick="secAction(\'wps_off\')">Выключить</button></div></div>' +
+      '<div class="dev"><div><div class="nm">Удалённый доступ</div><div class="mc">' +
+        esc(String(s.remote_web)) + ' · порт ' + esc(String(s.remote_port)) + '</div></div>' +
+        '<div class="btns"><button class="bad" onclick="secAction(\'remote_off\')">Выключить</button></div></div>' +
+      '<div class="dev"><div><div class="nm">Режим фильтра</div><div class="mc">' +
+        esc(s.filter_mode || '—') + ' · записей ' + esc(String(s.filter_count)) + '</div></div>' +
+        '<div class="btns"><button class="ghost" onclick="secMode(\'allow\')">Белый список</button>' +
+        '<button class="ghost" onclick="secMode(\'deny\')">Чёрный</button></div></div>';
+  } catch (e) { msg('toolsMsg', e.message, false); }
+}
+
+async function secAction(action){
+  try {
+    const res = await localPost('/api/security', { action: action });
+    msg('toolsMsg', res.message || (res.ok ? 'готово' : 'нет'), res.ok);
+    loadSecurity();
+  } catch (e) { msg('toolsMsg', e.message, false); }
+}
+async function secMode(mode){
+  if (mode === 'allow' && !confirm('Белый список пустит ТОЛЬКО свои устройства. Продолжить?')) return;
+  try {
+    const res = await localPost('/api/security', { action: 'mode', mode: mode });
+    msg('toolsMsg', res.message || (res.ok ? 'готово' : 'нет'), res.ok);
+    loadSecurity();
+  } catch (e) { msg('toolsMsg', e.message, false); }
+}
+
+async function loadNetmap(){
+  if (!LOCAL) return msg('toolsMsg', 'карта сети доступна на локальной панели', false);
+  try {
+    const d = await localGet('/api/netmap/all');
+    const devs = Object.entries(d.devices || {})
+      .sort((a, b) => String(b[1].last_seen || '').localeCompare(String(a[1].last_seen || '')))
+      .slice(0, 30);
+    $('extraBox').innerHTML = '<h2 style="font-size:12px;color:var(--dim)">Карта сети</h2>' +
+      rows(devs, ([mac, r]) => '<div class="dev"><div><div class="nm">' +
+        esc(r.name || mac) + (r.online ? ' · в сети' : '') + (r.blocked ? ' · блок' : '') + '</div>' +
+        '<div class="mc">' + esc(mac) + ' · ' + esc(r.ip || '—') + ' · видели ' +
+        esc(String(r.seen_count || 0)) + ' раз</div></div></div>');
   } catch (e) { msg('toolsMsg', e.message, false); }
 }
 
