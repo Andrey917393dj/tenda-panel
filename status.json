@@ -1,6 +1,11 @@
 {
- "time": "2026-11-24T23:26:21",
+ "time": "2026-11-24T23:26:28",
  "online": [
+  {
+   "name": "A12-koristuvaca-Igroman",
+   "mac": "ba:f9:79:0b:dc:6e",
+   "ip": "192.168.0.195"
+  },
   {
    "name": "DESKTOP-EB4A5NI",
    "mac": "b0:0c:d1:f1:f8:8f",
@@ -51,7 +56,13 @@
  "parental_entries": 0,
  "verified": true,
  "missing_macs": [],
- "new_devices": [],
+ "new_devices": [
+  {
+   "name": "A12-koristuvaca-Igroman",
+   "mac": "ba:f9:79:0b:dc:6e",
+   "ip": "192.168.0.195"
+  }
+ ],
  "ip_targets": [],
  "pause_left": 0,
  "schedule": {},
