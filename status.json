@@ -1,11 +1,6 @@
 {
- "time": "2026-11-25T00:31:41",
+ "time": "2026-11-25T00:32:13",
  "online": [
-  {
-   "name": "iPhone",
-   "mac": "a0:fb:c5:11:97:55",
-   "ip": "192.168.0.198"
-  },
   {
    "name": "A12-koristuvaca-Igroman",
    "mac": "ba:f9:79:0b:dc:6e",
@@ -19,8 +14,8 @@
  ],
  "blocked": [
   {
-   "name": "DESKTOP-JLQH6PC",
-   "mac": "74:56:3c:e8:22:db"
+   "name": "iPhone",
+   "mac": "a0:fb:c5:11:97:55"
   },
   {
    "name": "Unknown",
@@ -39,6 +34,10 @@
    "mac": "6e:9a:37:de:a1:e5"
   },
   {
+   "name": "DESKTOP-JLQH6PC",
+   "mac": "74:56:3c:e8:22:db"
+  },
+  {
    "name": "Unknown",
    "mac": "8c:d9:d6:33:f5:3c"
   }
@@ -47,7 +46,8 @@
   "POCO-X3-Pro",
   "DESKTOP-JLQH6PC",
   "DELL-Vostro-Sh",
-  "intruder-2a7e"
+  "intruder-2a7e",
+  "iPhone"
  ],
  "known_macs": [
   "2A:7E:22:C5:C7:74",
@@ -55,9 +55,10 @@
   "60:18:95:58:FD:B8",
   "6E:9A:37:DE:A1:E5",
   "74:56:3C:E8:22:DB",
-  "8C:D9:D6:33:F5:3C"
+  "8C:D9:D6:33:F5:3C",
+  "A0:FB:C5:11:97:55"
  ],
- "blocked_online_now": 0,
+ "blocked_online_now": 1,
  "parental_entries": 0,
  "verified": true,
  "missing_macs": [],
@@ -66,5 +67,5 @@
  "pause_left": 0,
  "schedule": {},
  "auto_block_new": false,
- "config_source": "github"
+ "config_source": "local"
 }
