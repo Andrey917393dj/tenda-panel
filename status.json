@@ -1,5 +1,5 @@
 {
- "time": "2026-11-25T00:19:12",
+ "time": "2026-11-25T00:20:02",
  "online": [
   {
    "name": "iPhone",
@@ -61,7 +61,18 @@
  "parental_entries": 0,
  "verified": true,
  "missing_macs": [],
- "new_devices": [],
+ "new_devices": [
+  {
+   "name": "iPhone",
+   "mac": "a0:fb:c5:11:97:55",
+   "ip": "192.168.0.198"
+  },
+  {
+   "name": "A12-koristuvaca-Igroman",
+   "mac": "ba:f9:79:0b:dc:6e",
+   "ip": "192.168.0.195"
+  }
+ ],
  "ip_targets": [],
  "pause_left": 0,
  "schedule": {},
