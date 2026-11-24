@@ -1,6 +1,11 @@
 {
- "time": "2026-11-24T23:57:54",
+ "time": "2026-11-24T23:58:57",
  "online": [
+  {
+   "name": "iPhone",
+   "mac": "a0:fb:c5:11:97:55",
+   "ip": "192.168.0.198"
+  },
   {
    "name": "A12-koristuvaca-Igroman",
    "mac": "ba:f9:79:0b:dc:6e",
