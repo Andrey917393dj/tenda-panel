@@ -35,6 +35,13 @@
     {
       "name": "iPhone",
       "note": ""
+    },
+    {
+      "name": "Unknown",
+      "note": "с панели",
+      "macs": [
+        "26:94:E8:5A:DF:08"
+      ]
     }
   ],
   "own_macs": [
