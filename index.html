@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Панель роутера</title>
+<style>
+  :root { --bg:#0e1116; --card:#161b22; --line:#232b36; --txt:#e6edf3; --dim:#8b949e;
+          --ok:#3fb950; --warn:#d29922; --bad:#f85149; --acc:#58a6ff; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--txt);
+         font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
+  .wrap { max-width:820px; margin:0 auto; padding:16px; }
+  h1 { font-size:20px; margin:8px 0 16px; font-weight:600; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px;
+          padding:16px; margin-bottom:14px; }
+  .row { display:flex; gap:8px; align-items:center; }
+  input[type=text], input[type=password] {
+    flex:1; background:#0d1117; border:1px solid var(--line); color:var(--txt);
+    border-radius:8px; padding:10px 12px; font-size:15px; min-width:0; }
+  button { background:var(--acc); color:#04121f; border:0; border-radius:8px;
+           padding:10px 14px; font-size:14px; font-weight:600; cursor:pointer; }
+  button.ghost { background:#21262d; color:var(--txt); }
+  button.danger { background:var(--bad); color:#fff; }
+  button:disabled { opacity:.45; cursor:default; }
+  .t { display:flex; justify-content:space-between; align-items:center;
+       padding:10px 0; border-bottom:1px solid var(--line); }
+  .t:last-child { border-bottom:0; }
+  .t .n { font-weight:600; }
+  .t .m { color:var(--dim); font-size:13px; font-family:ui-monospace,monospace; }
+  .pill { font-size:12px; padding:2px 8px; border-radius:999px; border:1px solid var(--line); color:var(--dim); }
+  .pill.on { color:var(--ok); border-color:#1f6f34; }
+  .pill.off { color:var(--bad); border-color:#6e2a26; }
+  .muted { color:var(--dim); font-size:13px; }
+  .msg { padding:10px 12px; border-radius:8px; margin-top:10px; font-size:14px; display:none; }
+  .msg.ok { background:#0f2d17; color:var(--ok); display:block; }
+  .msg.err { background:#2d1214; color:var(--bad); display:block; }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:640px) { .grid { grid-template-columns:1fr; } }
+  code { font-family:ui-monospace,monospace; font-size:13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Панель роутера</h1>
+
+  <div class="card" id="pwdCard">
+    <strong>Пароль панели роутера</strong>
+    <div class="muted" style="margin:8px 0 10px">
+      Введи тот пароль, который стоит на роутере сейчас. Скрипт сменит его на сложный
+      <code>V0stR0B4n2026</code> и запишет в файл.
+    </div>
+    <div class="row" style="margin-bottom:8px">
+      <input id="curPwd" type="password" placeholder="текущий пароль роутера" autocomplete="off">
+      <button onclick="changeRouterPassword(false)">Сменить</button>
+    </div>
+    <div class="row">
+      <button class="ghost" onclick="changeRouterPassword(true)">Сменить и включить блокировки</button>
+    </div>
+    <div class="msg" id="pwdMsg"></div>
+  </div>
+
+  <div class="card" id="alertCard" style="display:none; border-color:#6e2a26; background:#2d1214">
+    <strong style="color:var(--bad)" id="alertTitle">Внимание</strong>
+    <div class="muted" id="alertText" style="margin-top:6px"></div>
+  </div>
+
+  <div class="card" id="setup">
+    <div class="muted" style="margin-bottom:10px">
+      Подключение к репозиторию. Токен хранится только в этом браузере.
+    </div>
+    <div class="row" style="margin-bottom:8px">
+      <input id="repo" type="text" placeholder="владелец/репозиторий" autocomplete="off">
+    </div>
+    <div class="row">
+      <input id="token" type="password" placeholder="токен GitHub (fine-grained)" autocomplete="off">
+      <button onclick="saveConn()">Сохранить</button>
+    </div>
+    <div class="msg" id="setupMsg"></div>
+  </div>
+
+  <div class="card">
+    <div class="row" style="justify-content:space-between; margin-bottom:12px">
+      <strong>Цели блокировки</strong>
+      <span class="pill" id="statePill">—</span>
+    </div>
+    <div class="row" style="margin-bottom:12px">
+      <button class="ghost" id="toggleBtn" onclick="toggleAll()">Выключить всё</button>
+      <span class="muted" id="toggleHint"></span>
+    </div>
+    <div id="targets"><div class="muted">загрузка…</div></div>
+    <div class="row" style="margin-top:12px">
+      <input id="newName" type="text" placeholder="имя устройства, как в роутере" autocomplete="off">
+      <button onclick="addTarget()">Добавить</button>
+    </div>
+    <div class="msg" id="targetMsg"></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <strong>Сейчас в сети</strong>
+      <div id="online" class="muted" style="margin-top:10px">загрузка…</div>
+    </div>
+    <div class="card">
+      <strong>Заблокированы</strong>
+      <div id="blocked" class="muted" style="margin-top:10px">загрузка…</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="row" style="justify-content:space-between">
+      <span class="muted" id="stamp">—</span>
+      <button class="ghost" onclick="refresh()">Обновить</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const LS_REPO = 'tp_repo', LS_TOKEN = 'tp_token';
+const LOCAL = !!window.LOCAL_MODE;
+let cfg = null, cfgSha = null;
+
+function $(id) { return document.getElementById(id); }
+function showMsg(id, text, ok) {
+  const el = $(id);
+  el.textContent = text;
+  el.className = 'msg ' + (ok ? 'ok' : 'err');
+  if (ok) setTimeout(() => { el.className = 'msg'; }, 4000);
+}
+
+async function localGet(path) {
+  const r = await fetch(path, {
+    cache: 'no-store',
+    headers: { 'X-Panel-Pin': localStorage.getItem('tp_pin') || '' }
+  });
+  if (r.status === 401) { askPin(); throw new Error('нужен пин-код'); }
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  return r.json();
+}
+
+async function localPost(path, obj) {
+  const r = await fetch(path, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Panel-Pin': localStorage.getItem('tp_pin') || ''
+    },
+    body: JSON.stringify(obj)
+  });
+  if (r.status === 401) { askPin(); throw new Error('нужен пин-код'); }
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  return r.json();
+}
+
+async function changeRouterPassword(ban) {
+  const cur = ($('curPwd').value || '').trim();
+  if (!cur) return showMsg('pwdMsg', 'введи текущий пароль роутера', false);
+  $('pwdMsg').textContent = 'меняю…';
+  $('pwdMsg').className = 'msg';
+  try {
+    let res;
+    if (LOCAL) {
+      const r = await fetch('/api/router-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Panel-Pin': localStorage.getItem('tp_pin') || ''
+        },
+        body: JSON.stringify({ current: cur, ban: ban })
+      });
+      if (r.status === 401) { askPin(); throw new Error('нужен пин-код'); }
+      res = await r.json();
+    } else {
+      // GitHub-режим: просим агента сменить пароль через config.json
+      cfg.password_change = { current: cur, ban: !!ban };
+      await saveConfig('password change');
+      res = { ok: true, message: 'запрос отправлен — агент выполнит его в течение минуты' };
+    }
+    showMsg('pwdMsg', res.message || (res.ok ? 'готово' : 'не удалось'), res.ok);
+    if (res.ok) { $('curPwd').value = ''; refresh(); }
+  } catch (e) { showMsg('pwdMsg', e.message, false); }
+}
+
+function askPin() {
+  const cur = localStorage.getItem('tp_pin') || '';
+  const v = prompt('Пин-код панели (лежит в panel\\pin.txt на ПК):', cur);
+  if (v !== null) {
+    localStorage.setItem('tp_pin', v.trim());
+    location.reload();
+  }
+}
+
+function conn() {
+  const repo = ($('repo').value || localStorage.getItem(LS_REPO) || '').trim();
+  const token = ($('token').value || localStorage.getItem(LS_TOKEN) || '').trim();
+  return { repo, token };
+}
+
+function saveConn() {
+  const c = conn();
+  if (!c.repo || !c.token) return showMsg('setupMsg', 'нужны и репозиторий, и токен', false);
+  localStorage.setItem(LS_REPO, c.repo);
+  localStorage.setItem(LS_TOKEN, c.token);
+  showMsg('setupMsg', 'сохранено', true);
+  refresh();
+}
+
+async function gh(path, opts) {
+  const c = conn();
+  const url = 'https://api.github.com/repos/' + c.repo + '/contents/' + path;
+  const r = await fetch(url, Object.assign({
+    headers: {
+      'Authorization': 'Bearer ' + c.token,
+      'Accept': 'application/vnd.github+json'
+    }
+  }, opts || {}));
+  if (!r.ok) throw new Error('GitHub ' + r.status);
+  return r.json();
+}
+
+function b64d(s) { return decodeURIComponent(escape(atob(s.replace(/\n/g, '')))); }
+function b64e(s) { return btoa(unescape(encodeURIComponent(s))); }
+
+async function loadConfig() {
+  if (LOCAL) {
+    cfg = await localGet('/api/config');
+    cfgSha = 'local';
+    renderTargets();
+    return;
+  }
+  const j = await gh('config.json');
+  cfgSha = j.sha;
+  cfg = JSON.parse(b64d(j.content));
+  renderTargets();
+}
+
+async function saveConfig(note) {
+  if (LOCAL) {
+    cfg.updated = new Date().toISOString();
+    cfg.updated_by = note || 'panel';
+    await localPost('/api/config', cfg);
+    return;
+  }
+  const c = conn();
+  cfg.updated = new Date().toISOString();
+  cfg.updated_by = note || 'panel';
+  const r = await fetch('https://api.github.com/repos/' + c.repo + '/contents/config.json', {
+    method: 'PUT',
+    headers: {
+      'Authorization': 'Bearer ' + c.token,
+      'Accept': 'application/vnd.github+json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      message: 'panel: ' + (note || 'update'),
+      content: b64e(JSON.stringify(cfg, null, 2)),
+      sha: cfgSha
+    })
+  });
+  if (!r.ok) throw new Error('GitHub ' + r.status);
+  const j = await r.json();
+  cfgSha = j.content.sha;
+}
+
+function renderTargets() {
+  const box = $('targets');
+  const list = (cfg && cfg.targets) || [];
+  const off = cfg && cfg.enabled === false;
+  $('statePill').textContent = off ? 'выключено' : 'включено';
+  $('statePill').className = 'pill ' + (off ? 'off' : 'on');
+  $('toggleBtn').textContent = off ? 'Включить всё' : 'Выключить всё';
+  $('toggleBtn').className = off ? '' : 'ghost';
+  $('toggleHint').textContent = off
+    ? 'блокировки сняты, цели сохранены в памяти'
+    : (list.length ? '' : 'список пуст — блокировки не ставятся');
+  if (!list.length) { box.innerHTML = '<div class="muted">целей нет</div>'; return; }
+  box.innerHTML = list.map((t, i) =>
+    '<div class="t"><div><div class="n">' + esc(t.name) + '</div>' +
+    (t.note ? '<div class="m">' + esc(t.note) + '</div>' : '') + '</div>' +
+    '<button class="danger" onclick="delTarget(' + i + ')">Убрать</button></div>'
+  ).join('');
+}
+
+async function toggleAll() {
+  const off = cfg && cfg.enabled === false;
+  try {
+    if (off) {
+      // включить: вернуть сохранённые цели
+      cfg.targets = cfg.targets_saved || cfg.targets || [];
+      delete cfg.targets_saved;
+      cfg.enabled = true;
+      await saveConfig('enable');
+      showMsg('targetMsg', 'блокировки включены', true);
+    } else {
+      // выключить: запомнить цели и очистить список — агент снимет блоки
+      cfg.targets_saved = cfg.targets || [];
+      cfg.targets = [];
+      cfg.enabled = true;
+      await saveConfig('disable-all');
+      showMsg('targetMsg', 'блокировки сняты, цели запомнены', true);
+    }
+    await loadConfig();
+  } catch (e) { showMsg('targetMsg', e.message, false); }
+}
+
+function esc(s) {
+  return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+}
+
+async function addTarget() {
+  const name = $('newName').value.trim();
+  if (!name) return showMsg('targetMsg', 'введи имя', false);
+  try {
+    cfg.targets = cfg.targets || [];
+    if (cfg.targets.some(t => t.name.toLowerCase() === name.toLowerCase()))
+      return showMsg('targetMsg', 'такая цель уже есть', false);
+    cfg.targets.push({ name: name, note: '' });
+    await saveConfig('add ' + name);
+    $('newName').value = '';
+    renderTargets();
+    showMsg('targetMsg', 'добавлено: ' + name, true);
+  } catch (e) { showMsg('targetMsg', e.message, false); }
+}
+
+async function delTarget(i) {
+  const t = cfg.targets[i];
+  if (!confirm('Убрать цель «' + t.name + '»?')) return;
+  try {
+    cfg.targets.splice(i, 1);
+    await saveConfig('remove ' + t.name);
+    renderTargets();
+    showMsg('targetMsg', 'убрано: ' + t.name, true);
+  } catch (e) { showMsg('targetMsg', e.message, false); }
+}
+
+async function loadStatus() {
+  try {
+    let st;
+    if (LOCAL) {
+      st = await localGet('/api/status');
+    } else {
+      const j = await gh('status.json');
+      st = JSON.parse(b64d(j.content));
+    }
+    const ac = $('alertCard');
+    if (st.error) {
+      ac.style.display = 'block';
+      $('alertTitle').textContent = 'Блокировки не применяются';
+      $('alertText').textContent = st.error + ' — вероятно, пароль панели роутера сменили. Нужен сброс роутера (Reset 10 секунд).';
+    } else if (st.verified === false) {
+      ac.style.display = 'block';
+      $('alertTitle').textContent = 'Проверка не прошла';
+      $('alertText').textContent = 'На роутере нет адресов: ' + (st.missing_macs || []).join(', ');
+    } else {
+      ac.style.display = 'none';
+    }
+
+    $('stamp').textContent = 'последний проход: ' + (st.time || '—') +
+      (st.config_source ? ' · источник ' + st.config_source : '') +
+      (st.error ? ' · ошибка: ' + st.error : '') +
+      (st.verified === false ? ' · ПРОВЕРКА НЕ ПРОШЛА: ' + (st.missing_macs || []).join(', ') : '') +
+      (st.verified === true ? ' · блок подтверждён' : '');
+    $('online').innerHTML = (st.online || []).map(d =>
+      '<div class="t"><div class="n">' + esc(d.name) + '</div><div class="m">' + esc(d.mac) + '</div></div>'
+    ).join('') || '<div class="muted">никого</div>';
+    const nd = st.new_devices || [];
+    if (nd.length) {
+      $('online').innerHTML += '<div class="m" style="margin-top:10px;color:var(--warn)">новые: ' +
+        nd.map(d => esc(d.name) + ' ' + esc(d.mac)).join(', ') + '</div>';
+    }
+    $('blocked').innerHTML = (st.blocked || []).map(d =>
+      '<div class="t"><div class="n">' + esc(d.name || 'без имени') + '</div><div class="m">' + esc(d.mac) + '</div></div>'
+    ).join('') || '<div class="muted">пусто</div>';
+  } catch (e) {
+    $('stamp').textContent = 'статус недоступен: ' + e.message;
+  }
+}
+
+async function refresh() {
+  if (LOCAL) {
+    try { await loadConfig(); } catch (e) { showMsg('setupMsg', 'конфиг: ' + e.message, false); }
+    await loadStatus();
+    return;
+  }
+  const c = conn();
+  if (!c.repo || !c.token) return;
+  $('repo').value = c.repo;
+  try { await loadConfig(); } catch (e) { showMsg('setupMsg', 'конфиг: ' + e.message, false); }
+  await loadStatus();
+}
+
+(function init() {
+  if (LOCAL) {
+    const box = $('setup');
+    if (box) box.style.display = 'none';
+    refresh();
+    setInterval(loadStatus, 15000);
+    return;
+  }
+  $('repo').value = localStorage.getItem(LS_REPO) || '';
+  $('token').value = localStorage.getItem(LS_TOKEN) || '';
+  if ($('repo').value && $('token').value) refresh();
+  setInterval(() => { if (localStorage.getItem(LS_TOKEN)) loadStatus(); }, 15000);
+})();
+</script>
+</body>
+</html>
