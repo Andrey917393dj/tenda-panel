@@ -1,0 +1,14 @@
+{
+ "time": "2026-11-24T21:16:28",
+ "error": "вход в панель не удался",
+ "online": [],
+ "blocked": [],
+ "targets": [
+  "POCO-X3-Pro",
+  "DESKTOP-JLQH6PC",
+  "DELL-Vostro-Sh",
+  "intruder-2a7e"
+ ],
+ "known_macs": [],
+ "config_source": "github"
+}
