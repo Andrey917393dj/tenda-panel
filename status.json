@@ -1,5 +1,5 @@
 {
- "time": "2026-11-24T23:26:28",
+ "time": "2026-11-24T23:26:35",
  "online": [
   {
    "name": "A12-koristuvaca-Igroman",
@@ -56,13 +56,7 @@
  "parental_entries": 0,
  "verified": true,
  "missing_macs": [],
- "new_devices": [
-  {
-   "name": "A12-koristuvaca-Igroman",
-   "mac": "ba:f9:79:0b:dc:6e",
-   "ip": "192.168.0.195"
-  }
- ],
+ "new_devices": [],
  "ip_targets": [],
  "pause_left": 0,
  "schedule": {},
