@@ -168,6 +168,21 @@
     <div class="msg" id="targetMsg"></div>
   </div>
 
+  <div class="card" id="toolsCard" style="display:none">
+    <h2>Инструменты</h2>
+    <div class="row" style="flex-wrap:wrap;gap:10px">
+      <button class="ghost" onclick="runProbe()">Проверить, режет ли блок</button>
+      <button class="ghost" onclick="doPause(15)">Разрешить на 15 минут</button>
+      <button class="ghost" onclick="doPause(0)">Снять паузу</button>
+      <button class="ghost" onclick="exportCfg()">Экспорт конфига</button>
+      <button class="ghost" onclick="loadHistory()">История</button>
+      <button class="ghost" onclick="loadHealth()">Здоровье</button>
+    </div>
+    <div class="msg" id="toolsMsg"></div>
+    <div id="history" style="margin-top:12px"></div>
+    <pre id="healthBox" class="m" style="display:none;margin-top:12px;white-space:pre-wrap"></pre>
+  </div>
+
   <div class="grid" id="liveCards" style="display:none">
     <div class="card">
       <h2>Сейчас в сети</h2>
@@ -214,6 +229,7 @@ function doPin(){
       $('loginCard').style.display = 'none';
       $('pwdCard').style.display = 'block';
       $('targetsCard').style.display = 'block';
+      $('toolsCard').style.display = 'block';
       $('liveCards').style.display = 'grid';
       $('foot').style.display = 'flex';
       if (!LOCAL) $('setup').style.display = 'block';
@@ -341,6 +357,67 @@ function renderStatus(st){
   $('stamp').textContent = 'последний проход: ' + (st.time || '—') +
     (st.config_source ? ' · ' + st.config_source : '') +
     (st.verified === true ? ' · блок подтверждён' : '');
+}
+
+function runProbe(){
+  if (!LOCAL) return showMsg('toolsMsg', 'проверка блока доступна на локальной панели', false);
+  showMsg('toolsMsg', 'проверяю…', true);
+  fetch('/api/probe', { method: 'POST', headers: headers(), body: '{}' })
+    .then(r => r.json())
+    .then(res => {
+      if (!res.ok) throw new Error(res.error || 'не вышло');
+      const bad = (res.still_online || []);
+      showMsg('toolsMsg', bad.length
+        ? 'БЛОК НЕ РЕЖЕТ: в сети ' + bad.map(d => d.mac).join(', ')
+        : 'блок работает: все ' + res.blocked_count + ' адресов молчат', !bad.length);
+    })
+    .catch(e => showMsg('toolsMsg', e.message, false));
+}
+
+function doPause(minutes){
+  if (!LOCAL) return showMsg('toolsMsg', 'пауза доступна на локальной панели', false);
+  fetch('/api/pause', {
+    method: 'POST', headers: headers(),
+    body: JSON.stringify({ minutes: minutes })
+  }).then(r => r.json())
+    .then(res => { showMsg('toolsMsg', res.message || (res.ok ? 'готово' : 'нет'), res.ok); refresh(); })
+    .catch(e => showMsg('toolsMsg', e.message, false));
+}
+
+function exportCfg(){
+  if (!LOCAL) return showMsg('toolsMsg', 'экспорт доступен на локальной панели', false);
+  fetch('/api/export', { method: 'POST', headers: headers(), body: '{}' })
+    .then(r => r.json())
+    .then(res => showMsg('toolsMsg', res.ok ? 'сохранено: ' + res.path : (res.error || 'нет'), res.ok))
+    .catch(e => showMsg('toolsMsg', e.message, false));
+}
+
+function loadHistory(){
+  if (!LOCAL) return showMsg('toolsMsg', 'история доступна на локальной панели', false);
+  fetch('/api/history', { headers: headers() })
+    .then(r => r.json())
+    .then(list => {
+      $('history').innerHTML = list.length
+        ? list.slice().reverse().map(h =>
+            '<div class="t"><div><div class="n">' + esc(h.action) + '</div>' +
+            '<div class="m">' + esc(h.detail || '') + '</div></div>' +
+            '<div class="m">' + esc((h.time || '').replace('T', ' ').slice(5, 16)) + '</div></div>'
+          ).join('')
+        : '<div class="muted">пока пусто</div>';
+    })
+    .catch(e => showMsg('toolsMsg', e.message, false));
+}
+
+function loadHealth(){
+  if (!LOCAL) return showMsg('toolsMsg', 'отчёт доступен на локальной панели', false);
+  fetch('/api/health', { headers: headers() })
+    .then(r => r.json())
+    .then(res => {
+      const box = $('healthBox');
+      box.style.display = 'block';
+      box.textContent = res.text || res.error || '';
+    })
+    .catch(e => showMsg('toolsMsg', e.message, false));
 }
 
 function refresh(){
