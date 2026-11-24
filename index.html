@@ -222,8 +222,22 @@ function doPin(){
   localStorage.setItem(LS_PIN, v);
   const btn = $('pinBtn');
   btn.disabled = true; btn.innerHTML = '<span class="spin"></span>';
-  fetch('/api/config', { headers: { 'X-Panel-Pin': v } })
-    .then(r => { if (r.status === 401) throw new Error('пин не подошёл'); return r.json(); })
+
+  // Локальная панель проверяет пин своим API.
+  // GitHub-страница пина не знает — она проверяет доступ к репозиторию.
+  const probe = LOCAL
+    ? fetch('/api/config', { headers: { 'X-Panel-Pin': v } })
+        .then(r => { if (r.status === 401) throw new Error('пин не подошёл'); return r.json(); })
+    : (function(){
+        const repo = localStorage.getItem(LS_REPO) || ($('repo').value || '').trim();
+        const tok = localStorage.getItem(LS_TOKEN) || ($('token').value || '').trim();
+        if (!repo || !tok) throw new Error('сначала вставь репозиторий и токен');
+        return fetch('https://api.github.com/repos/' + repo + '/contents/config.json',
+                     { headers: { 'Authorization': 'Bearer ' + tok } })
+          .then(r => { if (!r.ok) throw new Error('репозиторий: ' + r.status); return r.json(); });
+      })();
+
+  probe
     .then(() => {
       pinReady = true;
       $('loginCard').style.display = 'none';
