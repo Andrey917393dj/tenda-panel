@@ -1,5 +1,5 @@
 {
- "time": "2026-11-25T01:57:58",
+ "time": "2026-11-25T01:58:58",
  "online": [
   {
    "name": "A12-koristuvaca-Igroman",
@@ -64,7 +64,7 @@
   "8C:D9:D6:33:F5:3C",
   "A0:FB:C5:11:97:55"
  ],
- "blocked_online_now": 1,
+ "blocked_online_now": 0,
  "parental_entries": 0,
  "verified": true,
  "missing_macs": [],
