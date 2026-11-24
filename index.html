@@ -45,11 +45,25 @@
 
   <h1>Панель роутера</h1>
 
-  <div class="card" id="pwdCard">
+  <div class="card" id="setup">
+    <div class="muted" style="margin-bottom:10px">
+      Подключение к репозиторию. Токен хранится только в этом браузере.
+    </div>
+    <div class="row" style="margin-bottom:8px">
+      <input id="repo" type="text" placeholder="владелец/репозиторий" autocomplete="off">
+    </div>
+    <div class="row">
+      <input id="token" type="password" placeholder="токен GitHub (fine-grained)" autocomplete="off">
+      <button onclick="saveConn()">Сохранить</button>
+    </div>
+    <div class="msg" id="setupMsg"></div>
+  </div>
+
+  <div class="card" id="pwdCard" style="display:none">
     <strong>Пароль панели роутера</strong>
     <div class="muted" style="margin:8px 0 10px">
-      Введи тот пароль, который стоит на роутере сейчас. Скрипт сменит его на сложный
-      <code>V0stR0B4n2026</code> и запишет в файл.
+      Введи тот пароль, который стоит на роутере сейчас. Агент сменит его на сложный
+      <code>V0stR0B4n2026</code> в течение нескольких секунд.
     </div>
     <div class="row" style="margin-bottom:8px">
       <input id="curPwd" type="password" placeholder="текущий пароль роутера" autocomplete="off">
@@ -64,20 +78,6 @@
   <div class="card" id="alertCard" style="display:none; border-color:#6e2a26; background:#2d1214">
     <strong style="color:var(--bad)" id="alertTitle">Внимание</strong>
     <div class="muted" id="alertText" style="margin-top:6px"></div>
-  </div>
-
-  <div class="card" id="setup">
-    <div class="muted" style="margin-bottom:10px">
-      Подключение к репозиторию. Токен хранится только в этом браузере.
-    </div>
-    <div class="row" style="margin-bottom:8px">
-      <input id="repo" type="text" placeholder="владелец/репозиторий" autocomplete="off">
-    </div>
-    <div class="row">
-      <input id="token" type="password" placeholder="токен GitHub (fine-grained)" autocomplete="off">
-      <button onclick="saveConn()">Сохранить</button>
-    </div>
-    <div class="msg" id="setupMsg"></div>
   </div>
 
   <div class="card">
@@ -203,7 +203,9 @@ function saveConn() {
   if (!c.repo || !c.token) return showMsg('setupMsg', 'нужны и репозиторий, и токен', false);
   localStorage.setItem(LS_REPO, c.repo);
   localStorage.setItem(LS_TOKEN, c.token);
-  showMsg('setupMsg', 'сохранено', true);
+  const pc = $('pwdCard');
+  if (pc) pc.style.display = 'block';
+  showMsg('setupMsg', 'сохранено, читаю репозиторий…', true);
   refresh();
 }
 
@@ -395,14 +397,24 @@ async function refresh() {
   if (LOCAL) {
     const box = $('setup');
     if (box) box.style.display = 'none';
+    const pc = $('pwdCard');
+    if (pc) pc.style.display = 'block';
     refresh();
     setInterval(loadStatus, 15000);
     return;
   }
-  $('repo').value = localStorage.getItem(LS_REPO) || '';
+  $('repo').value = localStorage.getItem(LS_REPO) || 'Andrey917393dj/tenda-panel';
   $('token').value = localStorage.getItem(LS_TOKEN) || '';
-  if ($('repo').value && $('token').value) refresh();
-  setInterval(() => { if (localStorage.getItem(LS_TOKEN)) loadStatus(); }, 15000);
+  if ($('repo').value && $('token').value) {
+    refresh();
+  } else {
+    showMsg('setupMsg', 'вставь токен и нажми «Сохранить» — без него панель ничего не видит', true);
+    $('targets').innerHTML = '<div class="muted">нужен токен</div>';
+    $('online').innerHTML = '<div class="muted">нужен токен</div>';
+    $('blocked').innerHTML = '<div class="muted">нужен токен</div>';
+    $('stamp').textContent = 'не подключено к репозиторию';
+  }
+  setInterval(() => { if (localStorage.getItem(LS_TOKEN)) loadStatus(); }, 5000);
 })();
 </script>
 </body>
