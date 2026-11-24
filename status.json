@@ -1,5 +1,5 @@
 {
- "time": "2026-11-25T01:56:56",
+ "time": "2026-11-25T01:57:58",
  "online": [
   {
    "name": "A12-koristuvaca-Igroman",
@@ -10,17 +10,12 @@
    "name": "DESKTOP-EB4A5NI",
    "mac": "b0:0c:d1:f1:f8:8f",
    "ip": "192.168.0.200"
-  },
-  {
-   "name": "Unknown",
-   "mac": "26:94:e8:5a:df:08",
-   "ip": "192.168.0.196"
   }
  ],
  "blocked": [
   {
-   "name": "iPhone",
-   "mac": "a0:fb:c5:11:97:55"
+   "name": "",
+   "mac": "26:94:e8:5a:df:08"
   },
   {
    "name": "Unknown",
@@ -45,6 +40,10 @@
   {
    "name": "Unknown",
    "mac": "8c:d9:d6:33:f5:3c"
+  },
+  {
+   "name": "iPhone",
+   "mac": "a0:fb:c5:11:97:55"
   }
  ],
  "targets": [
@@ -52,9 +51,11 @@
   "DESKTOP-JLQH6PC",
   "DELL-Vostro-Sh",
   "intruder-2a7e",
-  "iPhone"
+  "iPhone",
+  "Unknown"
  ],
  "known_macs": [
+  "26:94:E8:5A:DF:08",
   "2A:7E:22:C5:C7:74",
   "3E:7E:D7:87:8D:73",
   "60:18:95:58:FD:B8",
@@ -63,7 +64,7 @@
   "8C:D9:D6:33:F5:3C",
   "A0:FB:C5:11:97:55"
  ],
- "blocked_online_now": 0,
+ "blocked_online_now": 1,
  "parental_entries": 0,
  "verified": true,
  "missing_macs": [],
