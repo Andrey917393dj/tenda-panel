@@ -1,5 +1,5 @@
 {
- "time": "2026-11-25T22:22:11",
+ "time": "2026-11-25T22:23:17",
  "online": [
   {
    "name": "A12-koristuvaca-Igroman",
@@ -19,10 +19,6 @@
  ],
  "blocked": [
   {
-   "name": "DESKTOP-JLQH6PC",
-   "mac": "74:56:3c:e8:22:db"
-  },
-  {
    "name": "",
    "mac": "2a:7e:22:c5:c7:74"
   },
@@ -37,6 +33,10 @@
   {
    "name": "Unknown",
    "mac": "6e:9a:37:de:a1:e5"
+  },
+  {
+   "name": "DESKTOP-JLQH6PC",
+   "mac": "74:56:3c:e8:22:db"
   },
   {
    "name": "Unknown",
