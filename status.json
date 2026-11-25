@@ -1,5 +1,5 @@
 {
- "time": "2026-11-25T02:33:14",
+ "time": "2026-11-25T02:33:54",
  "online": [
   {
    "name": "A12-koristuvaca-Igroman",
@@ -13,14 +13,6 @@
   }
  ],
  "blocked": [
-  {
-   "name": "Unknown",
-   "mac": "26:94:e8:5a:df:08"
-  },
-  {
-   "name": "Unknown",
-   "mac": "2a:7e:22:c5:c7:74"
-  },
   {
    "name": "Unknown",
    "mac": "3e:7e:d7:87:8d:73"
@@ -44,15 +36,10 @@
  ],
  "targets": [
   "POCO-X3-Pro",
-  "DESKTOP-JLQH6PC",
   "DELL-Vostro-Sh",
-  "intruder-2a7e",
-  "iPhone",
-  "Unknown"
+  "DESKTOP-JLQH6PC"
  ],
  "known_macs": [
-  "26:94:E8:5A:DF:08",
-  "2A:7E:22:C5:C7:74",
   "3E:7E:D7:87:8D:73",
   "60:18:95:58:FD:B8",
   "6E:9A:37:DE:A1:E5",
