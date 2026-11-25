@@ -1,10 +1,15 @@
 {
- "time": "2026-11-25T20:36:18",
+ "time": "2026-11-25T20:37:20",
  "online": [
   {
    "name": "DESKTOP-EB4A5NI",
    "mac": "b0:0c:d1:f1:f8:8f",
    "ip": "192.168.0.200"
+  },
+  {
+   "name": "DESKTOP-JLQH6PC",
+   "mac": "74:56:3c:e8:22:db",
+   "ip": "192.168.0.197"
   }
  ],
  "blocked": [
