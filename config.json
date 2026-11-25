@@ -17,6 +17,21 @@
       "macs": [
         "60:18:95:58:FD:B8"
       ]
+    },
+    {
+      "name": "intruder-2a7e",
+      "note": "гость, меняет MAC",
+      "macs": [
+        "2A:7E:22:C5:C7:74",
+        "EE:20:F8:37:8E:23"
+      ]
+    },
+    {
+      "name": "DESKTOP-JLQH6PC",
+      "note": "с панели",
+      "macs": [
+        "74:56:3C:E8:22:DB"
+      ]
     }
   ],
   "own_macs": [
