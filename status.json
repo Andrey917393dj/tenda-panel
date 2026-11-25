@@ -1,5 +1,5 @@
 {
- "time": "2026-11-25T21:46:21",
+ "time": "2026-11-25T21:47:24",
  "online": [
   {
    "name": "DESKTOP-EB4A5NI",
@@ -33,10 +33,6 @@
   {
    "name": "Unknown",
    "mac": "8c:d9:d6:33:f5:3c"
-  },
-  {
-   "name": "POCO-X3-Pro",
-   "mac": "ee:20:f8:37:8e:23"
   }
  ],
  "targets": [
@@ -47,8 +43,7 @@
   "3E:7E:D7:87:8D:73",
   "60:18:95:58:FD:B8",
   "6E:9A:37:DE:A1:E5",
-  "8C:D9:D6:33:F5:3C",
-  "EE:20:F8:37:8E:23"
+  "8C:D9:D6:33:F5:3C"
  ],
  "blocked_online_now": 0,
  "parental_entries": 0,
