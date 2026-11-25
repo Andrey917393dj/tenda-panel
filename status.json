@@ -1,16 +1,38 @@
 {
- "time": "2026-11-25T22:33:27",
+ "time": "2026-11-25T22:34:31",
  "online": [
+  {
+   "name": "A12-koristuvaca-Igroman",
+   "mac": "ba:f9:79:0b:dc:6e",
+   "ip": "192.168.0.194"
+  },
   {
    "name": "DESKTOP-EB4A5NI",
    "mac": "b0:0c:d1:f1:f8:8f",
    "ip": "192.168.0.200"
+  },
+  {
+   "name": "Unknown",
+   "mac": "22:fb:52:7a:22:97",
+   "ip": "192.168.0.199"
   }
  ],
  "blocked": [
   {
+   "name": "DESKTOP-JLQH6PC",
+   "mac": "74:56:3c:e8:22:db"
+  },
+  {
+   "name": "Unknown",
+   "mac": "2a:7e:22:c5:c7:74"
+  },
+  {
    "name": "Unknown",
    "mac": "3e:7e:d7:87:8d:73"
+  },
+  {
+   "name": "Unknown",
+   "mac": "60:18:95:58:fd:b8"
   },
   {
    "name": "Unknown",
@@ -22,23 +44,11 @@
   },
   {
    "name": "Unknown",
-   "mac": "60:18:95:58:fd:b8"
-  },
-  {
-   "name": "Unknown",
-   "mac": "2a:7e:22:c5:c7:74"
+   "mac": "be:d4:97:4f:d9:3d"
   },
   {
    "name": "Unknown",
    "mac": "ee:20:f8:37:8e:23"
-  },
-  {
-   "name": "DESKTOP-JLQH6PC",
-   "mac": "74:56:3c:e8:22:db"
-  },
-  {
-   "name": "Unknown",
-   "mac": "be:d4:97:4f:d9:3d"
   }
  ],
  "targets": [
