@@ -1,5 +1,5 @@
 {
- "time": "2026-11-25T17:06:32",
+ "time": "2026-11-25T17:07:40",
  "online": [
   {
    "name": "DESKTOP-EB4A5NI",
@@ -54,5 +54,5 @@
  "pause_left": 0,
  "schedule": {},
  "auto_block_new": false,
- "config_source": "github"
+ "config_source": "local"
 }
