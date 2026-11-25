@@ -19,18 +19,19 @@
       ]
     },
     {
+      "name": "DESKTOP-JLQH6PC",
+      "note": "тот комп",
+      "macs": [
+        "74:56:3C:E8:22:DB",
+        "BE:D4:97:4F:D9:3D"
+      ]
+    },
+    {
       "name": "intruder-2a7e",
       "note": "гость, меняет MAC",
       "macs": [
         "2A:7E:22:C5:C7:74",
         "EE:20:F8:37:8E:23"
-      ]
-    },
-    {
-      "name": "DESKTOP-JLQH6PC",
-      "note": "с панели",
-      "macs": [
-        "74:56:3C:E8:22:DB"
       ]
     }
   ],
@@ -39,7 +40,7 @@
     "DC:F5:05:62:CB:45"
   ],
   "panel_password": "P0c0Ban234",
-  "updated": "2026-11-25T22:11:22",
+  "updated": "2026-11-25T22:23:45",
   "updated_by": "local-panel",
   "pause_until": 0
 }
