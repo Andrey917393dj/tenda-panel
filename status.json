@@ -1,5 +1,5 @@
 {
- "time": "2026-11-25T20:16:19",
+ "time": "2026-11-25T20:17:20",
  "online": [
   {
    "name": "A12-koristuvaca-Igroman",
@@ -15,11 +15,6 @@
    "name": "Unknown",
    "mac": "2a:7e:22:c5:c7:74",
    "ip": "192.168.0.193"
-  },
-  {
-   "name": "DESKTOP-JLQH6PC",
-   "mac": "74:56:3c:e8:22:db",
-   "ip": "192.168.0.197"
   }
  ],
  "blocked": [
