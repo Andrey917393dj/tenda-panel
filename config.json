@@ -12,35 +12,17 @@
       ]
     },
     {
-      "name": "DESKTOP-JLQH6PC",
-      "note": "второй компьютер",
-      "macs": [
-        "74:56:3C:E8:22:DB"
-      ]
-    },
-    {
       "name": "DELL-Vostro-Sh",
-      "note": "гость, лазил в панель",
+      "note": "гость",
       "macs": [
         "60:18:95:58:FD:B8"
       ]
     },
     {
-      "name": "intruder-2a7e",
-      "note": "неизвестный, появился вместе с гостем",
+      "name": "DESKTOP-JLQH6PC",
+      "note": "второй компьютер",
       "macs": [
-        "2A:7E:22:C5:C7:74"
-      ]
-    },
-    {
-      "name": "iPhone",
-      "note": ""
-    },
-    {
-      "name": "Unknown",
-      "note": "с панели",
-      "macs": [
-        "26:94:E8:5A:DF:08"
+        "74:56:3C:E8:22:DB"
       ]
     }
   ],
