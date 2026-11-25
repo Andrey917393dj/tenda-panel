@@ -1,6 +1,11 @@
 {
- "time": "2026-11-25T21:37:48",
+ "time": "2026-11-25T21:38:49",
  "online": [
+  {
+   "name": "DELL-Vostro-Sh",
+   "mac": "60:18:95:58:fd:b8",
+   "ip": "192.168.0.199"
+  },
   {
    "name": "DESKTOP-EB4A5NI",
    "mac": "b0:0c:d1:f1:f8:8f",
@@ -10,6 +15,11 @@
    "name": "Unknown",
    "mac": "be:d4:97:4f:d9:3d",
    "ip": "192.168.0.195"
+  },
+  {
+   "name": "DESKTOP-JLQH6PC",
+   "mac": "74:56:3c:e8:22:db",
+   "ip": "192.168.0.197"
   }
  ],
  "blocked": [
@@ -34,24 +44,20 @@
    "mac": "ee:20:f8:37:8e:23"
   },
   {
-   "name": "Unknown",
-   "mac": "3e:7e:d7:87:8d:73"
-  },
-  {
-   "name": "DELL-Vostro-Sh",
-   "mac": "60:18:95:58:fd:b8"
+   "name": "DESKTOP-EB4A5NI",
+   "mac": "b0:0c:d1:f1:f8:8f"
   },
   {
    "name": "Unknown",
-   "mac": "6e:9a:37:de:a1:e5"
+   "mac": "dc:f5:05:62:cb:45"
   },
   {
-   "name": "Unknown",
-   "mac": "8c:d9:d6:33:f5:3c"
+   "name": "A12-koristuvaca-Igroman",
+   "mac": "ba:f9:79:0b:dc:6e"
   },
   {
-   "name": "POCO-X3-Pro",
-   "mac": "ee:20:f8:37:8e:23"
+   "name": "DESKTOP-JLQH6PC",
+   "mac": "74:56:3c:e8:22:db"
   }
  ],
  "targets": [
