@@ -1,5 +1,5 @@
 {
- "time": "2026-11-25T22:23:17",
+ "time": "2026-11-25T22:23:52",
  "online": [
   {
    "name": "A12-koristuvaca-Igroman",
@@ -50,8 +50,8 @@
  "targets": [
   "POCO-X3-Pro",
   "DELL-Vostro-Sh",
-  "intruder-2a7e",
-  "DESKTOP-JLQH6PC"
+  "DESKTOP-JLQH6PC",
+  "intruder-2a7e"
  ],
  "known_macs": [
   "2A:7E:22:C5:C7:74",
@@ -64,8 +64,10 @@
  ],
  "blocked_online_now": 0,
  "parental_entries": 0,
- "verified": true,
- "missing_macs": [],
+ "verified": false,
+ "missing_macs": [
+  "BE:D4:97:4F:D9:3D"
+ ],
  "new_devices": [],
  "ip_targets": [],
  "pause_left": 0,
