@@ -1,5 +1,5 @@
 {
- "time": "2026-11-25T20:18:25",
+ "time": "2026-11-25T20:19:30",
  "online": [
   {
    "name": "A12-koristuvaca-Igroman",
@@ -10,21 +10,16 @@
    "name": "DESKTOP-EB4A5NI",
    "mac": "b0:0c:d1:f1:f8:8f",
    "ip": "192.168.0.200"
-  },
-  {
-   "name": "Unknown",
-   "mac": "2a:7e:22:c5:c7:74",
-   "ip": "192.168.0.193"
   }
  ],
  "blocked": [
   {
-   "name": "DELL-Vostro-Sh",
-   "mac": "60:18:95:58:fd:b8"
-  },
-  {
    "name": "Unknown",
    "mac": "3e:7e:d7:87:8d:73"
+  },
+  {
+   "name": "DELL-Vostro-Sh",
+   "mac": "60:18:95:58:fd:b8"
   },
   {
    "name": "Unknown",
