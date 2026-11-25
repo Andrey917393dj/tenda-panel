@@ -306,14 +306,14 @@ function ensureToken(){
 
 /* ---------- отрисовка ---------- */
 function render(){
-  const list = (cfg.targets || []);
-  const off = cfg.enabled === false;
+  const list = (cfg && cfg.targets) || [];
+  const off = cfg && cfg.enabled === false;
   $('stateText').textContent = off ? 'выключено' : 'включено';
   $('statePill').className = 'pill ' + (off ? 'off' : 'on');
   $('targets').innerHTML = list.length ? list.map((t, i) =>
     '<div class="dev"><div><div class="nm">' + esc(t.name) + '</div>' +
     '<div class="mc">' + esc((t.macs || []).join(' · ') || 'без адресов') + '</div></div>' +
-    '<div class="btns"><button class="bad" onclick="delTarget(' + i + ')">Убрать</button></div></div>'
+    '<div class="btns"><button class="bad" data-i="' + i + '" onclick="delTarget(this.dataset.i)">Убрать</button></div></div>'
   ).join('') : '<div class="muted">целей нет</div>';
 }
 
@@ -337,20 +337,22 @@ function renderStatus(st){
   $('online').innerHTML = online.length ? online.map(d => {
     const mac = String(d.mac).toUpperCase();
     const isBlocked = blockedMacs.has(mac);
+    const safeName = esc(String(d.name || '').replace(/[^\wА-Яа-яЁё .-]/g, ''));
     return '<div class="dev"><div><div class="nm">' + esc(d.name) + '</div>' +
       '<div class="mc">' + esc(mac) + (d.ip ? ' · ' + esc(d.ip) : '') + '</div></div>' +
       '<div class="btns">' +
       (isBlocked
-        ? '<button class="ok" onclick="unblock(\'' + esc(mac) + '\')">Разблокировать</button>'
-        : '<button class="bad" onclick="block(\'' + esc(mac) + '\',\'' + esc(d.name).replace(/'/g,'') + '\')">Заблокировать</button>') +
+        ? '<button class="ok" data-mac="' + esc(mac) + '" onclick="unblock(this.dataset.mac)">Разблокировать</button>'
+        : '<button class="bad" data-mac="' + esc(mac) + '" data-name="' + safeName + '" onclick="block(this.dataset.mac, this.dataset.name)">Заблокировать</button>') +
       '</div></div>';
   }).join('') : '<div class="muted">никого</div>';
 
   $('blocked').innerHTML = (st.blocked || []).length ? (st.blocked || []).map(d => {
     const mac = String(d.mac).toUpperCase();
-    return '<div class="dev"><div><div class="nm">' + esc(d.name || 'без имени') + '</div>' +
+    const nm = d.name || (cfg && (cfg.targets || []).find(t => (t.macs || []).some(m => String(m).toUpperCase() === mac)) || {}).name || 'без имени';
+    return '<div class="dev"><div><div class="nm">' + esc(nm) + '</div>' +
       '<div class="mc">' + esc(mac) + '</div></div>' +
-      '<div class="btns"><button class="ok" onclick="unblock(\'' + esc(mac) + '\')">Разблокировать</button></div></div>';
+      '<div class="btns"><button class="ok" data-mac="' + esc(mac) + '" onclick="unblock(this.dataset.mac)">Разблокировать</button></div></div>';
   }).join('') : '<div class="muted">пусто</div>';
 
   const nd = st.new_devices || [];
@@ -410,8 +412,11 @@ async function unblock(mac){
 }
 async function delTarget(i){
   if (!ensureToken()) return;
-  const t = cfg.targets[i];
-  cfg.targets.splice(i, 1);
+  if (!cfg || !cfg.targets) return;
+  const idx = parseInt(i, 10);
+  const t = cfg.targets[idx];
+  if (!t) return msg('targetMsg', 'цель не найдена, обнови страницу', false);
+  cfg.targets.splice(idx, 1);
   try { await writeConfig('remove ' + (t.name || '')); await refresh(); pollStatus(); }
   catch (e) { msg('targetMsg', e.message, false); }
 }
