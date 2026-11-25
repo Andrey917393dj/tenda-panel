@@ -1,10 +1,15 @@
 {
- "time": "2026-11-25T21:39:56",
+ "time": "2026-11-25T21:40:58",
  "online": [
   {
    "name": "DESKTOP-EB4A5NI",
    "mac": "b0:0c:d1:f1:f8:8f",
    "ip": "192.168.0.200"
+  },
+  {
+   "name": "Unknown",
+   "mac": "be:d4:97:4f:d9:3d",
+   "ip": "192.168.0.195"
   },
   {
    "name": "DESKTOP-JLQH6PC",
@@ -45,7 +50,7 @@
   "8C:D9:D6:33:F5:3C",
   "EE:20:F8:37:8E:23"
  ],
- "blocked_online_now": 1,
+ "blocked_online_now": 0,
  "parental_entries": 0,
  "verified": true,
  "missing_macs": [],
