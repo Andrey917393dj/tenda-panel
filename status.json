@@ -1,11 +1,6 @@
 {
- "time": "2026-11-25T22:32:17",
+ "time": "2026-11-25T22:33:27",
  "online": [
-  {
-   "name": "A12-koristuvaca-Igroman",
-   "mac": "ba:f9:79:0b:dc:6e",
-   "ip": "192.168.0.194"
-  },
   {
    "name": "DESKTOP-EB4A5NI",
    "mac": "b0:0c:d1:f1:f8:8f",
@@ -26,15 +21,15 @@
    "mac": "8c:d9:d6:33:f5:3c"
   },
   {
-   "name": "DELL-Vostro-Sh",
+   "name": "Unknown",
    "mac": "60:18:95:58:fd:b8"
   },
   {
-   "name": "",
+   "name": "Unknown",
    "mac": "2a:7e:22:c5:c7:74"
   },
   {
-   "name": "POCO-X3-Pro",
+   "name": "Unknown",
    "mac": "ee:20:f8:37:8e:23"
   },
   {
@@ -42,7 +37,7 @@
    "mac": "74:56:3c:e8:22:db"
   },
   {
-   "name": "",
+   "name": "Unknown",
    "mac": "be:d4:97:4f:d9:3d"
   }
  ],
