@@ -1,5 +1,5 @@
 {
- "time": "2026-11-25T02:30:41",
+ "time": "2026-11-25T02:31:46",
  "online": [
   {
    "name": "A12-koristuvaca-Igroman",
@@ -13,10 +13,6 @@
   }
  ],
  "blocked": [
-  {
-   "name": "iPhone",
-   "mac": "a0:fb:c5:11:97:55"
-  },
   {
    "name": "Unknown",
    "mac": "26:94:e8:5a:df:08"
@@ -61,8 +57,7 @@
   "60:18:95:58:FD:B8",
   "6E:9A:37:DE:A1:E5",
   "74:56:3C:E8:22:DB",
-  "8C:D9:D6:33:F5:3C",
-  "A0:FB:C5:11:97:55"
+  "8C:D9:D6:33:F5:3C"
  ],
  "blocked_online_now": 0,
  "parental_entries": 0,
