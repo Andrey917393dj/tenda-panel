@@ -1,12 +1,53 @@
 {
- "time": "2026-11-25T15:45:24",
- "error": "вход в панель не удался",
- "online": [],
- "blocked": [],
+ "time": "2026-11-25T15:46:25",
+ "online": [
+  {
+   "name": "DESKTOP-EB4A5NI",
+   "mac": "b0:0c:d1:f1:f8:8f",
+   "ip": "192.168.0.200"
+  },
+  {
+   "name": "DESKTOP-JLQH6PC",
+   "mac": "74:56:3c:e8:22:db",
+   "ip": "192.168.0.197"
+  }
+ ],
+ "blocked": [
+  {
+   "name": "DELL-Vostro-Sh",
+   "mac": "60:18:95:58:fd:b8"
+  },
+  {
+   "name": "Unknown",
+   "mac": "3e:7e:d7:87:8d:73"
+  },
+  {
+   "name": "Unknown",
+   "mac": "6e:9a:37:de:a1:e5"
+  },
+  {
+   "name": "Unknown",
+   "mac": "8c:d9:d6:33:f5:3c"
+  }
+ ],
  "targets": [
   "POCO-X3-Pro",
   "DELL-Vostro-Sh"
  ],
- "known_macs": [],
+ "known_macs": [
+  "3E:7E:D7:87:8D:73",
+  "60:18:95:58:FD:B8",
+  "6E:9A:37:DE:A1:E5",
+  "8C:D9:D6:33:F5:3C"
+ ],
+ "blocked_online_now": 0,
+ "parental_entries": 0,
+ "verified": true,
+ "missing_macs": [],
+ "new_devices": [],
+ "ip_targets": [],
+ "pause_left": 0,
+ "schedule": {},
+ "auto_block_new": false,
  "config_source": "github"
 }
