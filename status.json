@@ -1,10 +1,10 @@
 {
- "time": "2026-11-26T11:42:02",
+ "time": "2026-11-26T12:00:40",
  "online": [
   {
    "name": "A12-koristuvaca-Igroman",
    "mac": "ba:f9:79:0b:dc:6e",
-   "ip": "192.168.0.194"
+   "ip": "192.168.0.100"
   },
   {
    "name": "DESKTOP-EB4A5NI",
@@ -14,8 +14,8 @@
  ],
  "blocked": [
   {
-   "name": "DESKTOP-JLQH6PC",
-   "mac": "74:56:3c:e8:22:db"
+   "name": "DELL-Vostro-Sh",
+   "mac": "60:18:95:58:fd:b8"
   },
   {
    "name": "Unknown",
@@ -26,12 +26,12 @@
    "mac": "3e:7e:d7:87:8d:73"
   },
   {
-   "name": "DELL-Vostro-Sh",
-   "mac": "60:18:95:58:fd:b8"
+   "name": "Unknown",
+   "mac": "6e:9a:37:de:a1:e5"
   },
   {
    "name": "Unknown",
-   "mac": "6e:9a:37:de:a1:e5"
+   "mac": "74:56:3c:e8:22:db"
   },
   {
    "name": "Unknown",
