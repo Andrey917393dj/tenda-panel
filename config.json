@@ -19,14 +19,6 @@
       ]
     },
     {
-      "name": "DESKTOP-JLQH6PC",
-      "note": "тот комп",
-      "macs": [
-        "74:56:3C:E8:22:DB",
-        "BE:D4:97:4F:D9:3D"
-      ]
-    },
-    {
       "name": "intruder-2a7e",
       "note": "гость, меняет MAC",
       "macs": [
