@@ -1,6 +1,11 @@
 {
- "time": "2026-11-26T19:24:49",
+ "time": "2026-11-26T19:25:52",
  "online": [
+  {
+   "name": "A12-koristuvaca-Igroman",
+   "mac": "ba:f9:79:0b:dc:6e",
+   "ip": "192.168.0.100"
+  },
   {
    "name": "DESKTOP-EB4A5NI",
    "mac": "b0:0c:d1:f1:f8:8f",
@@ -71,5 +76,5 @@
  "pause_left": 0,
  "schedule": {},
  "auto_block_new": false,
- "config_source": "local"
+ "config_source": "github"
 }
