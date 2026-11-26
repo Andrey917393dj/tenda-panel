@@ -1,5 +1,5 @@
 {
- "time": "2026-11-26T22:51:43",
+ "time": "2026-11-26T22:52:45",
  "error": "вход в панель не удался",
  "online": [],
  "blocked": [],
@@ -9,5 +9,5 @@
   "intruder-2a7e"
  ],
  "known_macs": [],
- "config_source": "local"
+ "config_source": "github"
 }
