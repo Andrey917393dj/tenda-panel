@@ -1,6 +1,11 @@
 {
- "time": "2026-11-28T00:24:08",
+ "time": "2026-11-28T00:25:12",
  "online": [
+  {
+   "name": "Unknown",
+   "mac": "42:ba:1a:6c:0f:03",
+   "ip": "192.168.0.100"
+  },
   {
    "name": "A12-koristuvaca-Igroman",
    "mac": "ba:f9:79:0b:dc:6e",
