@@ -1,15 +1,10 @@
 {
- "time": "2026-11-28T00:27:35",
+ "time": "2026-11-28T00:28:37",
  "online": [
   {
    "name": "Unknown",
    "mac": "42:ba:1a:6c:0f:03",
    "ip": "192.168.0.100"
-  },
-  {
-   "name": "A12-koristuvaca-Igroman",
-   "mac": "ba:f9:79:0b:dc:6e",
-   "ip": "192.168.0.101"
   },
   {
    "name": "DESKTOP-EB4A5NI",
@@ -65,5 +60,5 @@
  "pause_left": 0,
  "schedule": {},
  "auto_block_new": false,
- "config_source": "local"
+ "config_source": "github"
 }
