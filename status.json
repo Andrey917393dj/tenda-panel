@@ -1,5 +1,5 @@
 {
- "time": "2026-11-28T00:26:15",
+ "time": "2026-11-28T00:27:35",
  "online": [
   {
    "name": "Unknown",
@@ -65,5 +65,5 @@
  "pause_left": 0,
  "schedule": {},
  "auto_block_new": false,
- "config_source": "github"
+ "config_source": "local"
 }
