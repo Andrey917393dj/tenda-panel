@@ -1,5 +1,5 @@
 {
- "time": "2026-11-27T21:19:37",
+ "time": "2026-11-27T21:21:12",
  "online": [
   {
    "name": "A12-koristuvaca-Igroman",
@@ -60,5 +60,5 @@
  "pause_left": 0,
  "schedule": {},
  "auto_block_new": false,
- "config_source": "github"
+ "config_source": "local"
 }
